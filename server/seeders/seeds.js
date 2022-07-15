@@ -54,17 +54,6 @@ db.once('open', async () => {
     movieData.push(createdMovie);
   }
 
-  // create suggestions
-  const suggestedMovieData = [];
-
-  // loop for creating suggestions using created movies
-  for (let i = 0; i < movieData.length; i += 1){
-    const randomMovieIndex = Math.floor(Math.random() * movieData.ops.length);
-    const randomUserIndex = Math.floor(Math.random() * createdUsers.ops.length);
-    
-    
-  }
-
   console.log('FAKE DATA CREATED');
   process.exit(0);
 });

@@ -2,7 +2,7 @@
 // when a movie is RATED, a new instance of a Movie is created with the title, and the data 
 // in the ratingSchema array is updated with the logged in user's username and subsequent rating
 // rating: DISLIKE | LIKE | MUST SEE
-const { Schema } = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 const ratingSchema = new Schema(
   {
@@ -17,4 +17,6 @@ const ratingSchema = new Schema(
   }
 );
 
-module.exports = ratingSchema;
+const Rating = model('Rating', ratingSchema);
+
+module.exports = Rating;
