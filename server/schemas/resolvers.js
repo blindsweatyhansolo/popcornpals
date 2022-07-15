@@ -4,7 +4,15 @@
 // Best practice: methods should be the same name as the query/mutation that use them
 const resolvers = {
   // QUERY RESOLVERS //
-  
+  Query: {
+    users: async () => {
+      return User.find()
+        .select('-__v -password')
+        .populate('friends')
+        .populate('ratedMovies')
+        .populate('suggestions')
+    }
+  }
   // ME - use authenticated user (JWT passed auth) to return logged in user's data; populate
   // with friends, rated movies, and suggestions
 

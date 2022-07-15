@@ -14,7 +14,7 @@ const typeDefs = gql`
     friendCount: Int
     friends: [User]
     ratedMovies: [Movie]
-    suggestedMovies: [Suggestion]
+    suggestions: [Suggestion]
   }
 
   # full Movie type definition
@@ -26,10 +26,10 @@ const typeDefs = gql`
   # Auth type definition (JWT)
 
   # DEFINE QUERIES
-  # me | users | user | ratedMovies | suggestions 
+  # me | users | user | ratedMovies | suggestions
   type Query {
     users: [User]
-  }
+  } 
 
   # DEFINE MUTATIONS
   # login | addUser | removeUser | addFriend | removeFriend | addMovie | rateMovie

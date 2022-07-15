@@ -5,22 +5,26 @@
 // suggested are added to the DB, instead of a massive collection
 
 const { Schema, model } = require('mongoose');
-const ratingSchema = require('./Rating');
 
 // define Movie schema
 const movieSchema = new Schema(
   {
+    // omdb ID instead of TITLE
+    imdbID: {
+      type: String,
+      required: true
+    },
     title: {
       type: String,
       required: true
     },
     // reference to ratingSchema which holds a user ID and their rating for this movie
-    rating: [ratingSchema]
-  },
-  {
-    toJSON: {
-      getters: true
-    }
+    rating: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Rating'
+      }
+    ]
   }
 );
 

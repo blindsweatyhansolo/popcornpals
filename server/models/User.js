@@ -1,6 +1,5 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
-const suggestionSchema = require('./Suggestion');
 
 // define User schema
 const userSchema = new Schema(
@@ -34,7 +33,12 @@ const userSchema = new Schema(
         ref: 'Movie'
       }
     ],
-    suggestedMovies: [suggestionSchema]
+    suggestions: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Suggestion'
+      }
+    ]
   },
   {
     toJSON: {

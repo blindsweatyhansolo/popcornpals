@@ -6,15 +6,15 @@ const { Schema } = require('mongoose');
 
 const suggestionSchema = new Schema(
   {
-    title: {
-      type: String,
-      required: true
+    movie: {
+      type: Schema.Types.ObjectId,
+      ref: 'Movie'
     },
     // suggestedBy is the current logged in user's username
     suggestedBy: {
-      type: String,
-      required: true
-    }
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
   }
 );
 
