@@ -1,11 +1,28 @@
 // GRAPHQL RESOLVERS //
 // import AuthenticationError, User/Movie models, and signToken (JWT)
 const { User, Movie, Rating } = require('../models');
+const { AuthenticationError } = require('apollo-server-express');
+const { signToken } = require('../utils/auth');
 
 // Best practice: methods should be the same name as the query/mutation that use them
 const resolvers = {
   // QUERY RESOLVERS //
   Query: {
+    // ME - use authenticated user (JWT passed auth) to return logged in user's data; populate
+    // with friends, rated movies, and suggestions
+    me: async (parent, args, context) => {
+      if (context.user) { 
+        const userData = await User.findOne({ _id: context.user._id })
+          .select('-__v -password')
+          .populate('friends')
+          .populate('ratedMovies')
+          // .populate('suggestions')
+
+          return userData;
+        }
+
+        throw new AuthenticationError('Not logged in!');
+    },
 
     // USERS - find all users; populate with friend and rated movie data
     users: async () => {
@@ -22,9 +39,6 @@ const resolvers = {
       .populate('friends')
       .populate('ratedMovies')
     },
-
-    // ME - use authenticated user (JWT passed auth) to return logged in user's data; populate
-    // with friends, rated movies, and suggestions
 
     // RATEDMOVIES - find all rated movies for specified user; params: username
     ratedMovies: async (parent, { username }) => {
@@ -61,8 +75,31 @@ const resolvers = {
     // { token, user }
     addUser: async (parent, args) => {
       const user = await User.create(args);
+      const token = signToken(user);
 
-      return user;
+      return { token, user };
+    },
+
+    // LOGIN - find a user by email, throw AuthenticationError if user is not found; use bcrypt
+    // isCorrectPassword(password) to check password, throw AuthenticationError if password
+    // is incorrect; assign JWT with signToken; return { token, user }
+    login: async (parent, { email, password }) => {
+      const user = await User.findOne({ email });
+
+      // if user is not found, throw AuthenticationError
+      if (!user) {
+        throw new AuthenticationError('Login failed. Please check credentials.');
+      }
+
+      const correctPw = await user.isCorrectPassword(password);
+
+      // if password is incorrect, throw AuthenticationError
+      if (!correctPw) {
+        throw new AuthenticationError('Login failed. Please check credentials.');
+      }
+
+      const token = await signToken(user);
+      return { token, user };
     },
     
     // REMOVEUSER - remove user from DB using username/id
@@ -115,13 +152,6 @@ const resolvers = {
     // }
 
   }
-
-
-  // LOGIN - find a user by email, throw AuthenticationError if user is not found; use bcrypt
-  // isCorrectPassword(password) to check password, throw AuthenticationError if password
-  // is incorrect; assign JWT with signToken; return { token, user }
-
-
 };
 
 // export resolvers

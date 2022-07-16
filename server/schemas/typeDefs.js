@@ -39,10 +39,15 @@ const typeDefs = gql`
   }
 
   # Auth type definition (JWT)
+  type Auth {
+    token: ID!
+    user: User
+  }
 
   # DEFINE QUERIES
   # me | users | user | ratedMovies | suggestions
   type Query {
+    me: User
     users: [User]
     user(_id: ID!): User
     ratedMovies(username: String!): User
@@ -55,7 +60,8 @@ const typeDefs = gql`
   # DEFINE MUTATIONS
   # login | addUser | removeUser | addFriend | removeFriend | addMovie | rateMovie
   type Mutation {
-    addUser(username: String!, email: String!, password: String!): User
+    addUser(username: String!, email: String!, password: String!): Auth
+    login(email: String!, password: String!): Auth
     removeUser(_id: ID!): User
     addFriend(friendId: ID!, userId: ID!): User
     removeFriend(friendId: ID!, userId: ID!): User
