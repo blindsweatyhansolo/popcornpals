@@ -10,10 +10,12 @@ const ratingSchema = new Schema(
       type: String,
       required: true
     },
-    user: {
+    user: [
+      {
       type: Schema.Types.ObjectId,
       ref: 'User'
-    }
+      }
+    ]
   }
 );
 

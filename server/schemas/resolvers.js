@@ -39,19 +39,20 @@ const resolvers = {
     allMovies: async () => {
       return Movie.find()
         .select('-__v')
-        // .populate('rating')
+        .populate('rating')
     },
 
     // SINGLEMOVIE - find single movie saved in db via id
     singleMovie: async (parent, { _id }) => {
       return Movie.findOne({ _id })
         .select('-__v')
-        // .populate('rating')
+        .populate('rating')
     },
 
-    allRatings: async () => {
-      return Rating.find()
-    },
+    // allRatings: async () => {
+    //   return Rating.find()
+    //     .populate('user')
+    // },
   },
 
   // MUTATION RESOLVERS //
@@ -86,24 +87,32 @@ const resolvers = {
 
     // REMOVEFRIEND - find/update logged in user via context; remove friendId from User's friends
     // array; return updated user data
-  
+    removeFriend: async (parent, { friendId, userId }) => {
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: userId },
+        { $pull: { friends: friendId } },
+        { new: true }
+      ).populate('friends');
+
+      return updatedUser;
+    },
     // ADDMOVIE - scrape movie title from API query params, create new Movie in DB
   
     // RATEMOVIE - find Movie by title, if no Movie is found create new Movie with ADDMOVIE; push
     // rating and username(context) to Movie's rating array
-    rateMovie: async (parent, { userRating, userId }) => {
-      // create new rating object with user's rating and id
-      const newRating = await Rating.create({ rating: userRating, user: userId });
+    // rateMovie: async (parent, { userRating, userId }) => {
+    //   // create new rating object with user's rating and id
+    //   const newRating = await Rating.create({ rating: userRating, user: userId });
 
-      // // then push new rating to the Movie
-      // const updatedMovie = await Movie.findOneAndUpdate(
-      //   { _id: movieId },
-      //   { $addToSet: { rating: { ratingId } } },
-      //   { new: true, runValidators: true }
-      // );
+    //   // // then push new rating to the Movie
+    //   // const updatedMovie = await Movie.findOneAndUpdate(
+    //   //   { _id: movieId },
+    //   //   { $addToSet: { rating: { ratingId } } },
+    //   //   { new: true, runValidators: true }
+    //   // );
       
-      return newRating;
-    }
+    //   return newRating;
+    // }
 
   }
 

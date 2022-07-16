@@ -49,7 +49,7 @@ const typeDefs = gql`
     # suggestions(username: String!): User
     allMovies: [Movie]
     singleMovie(_id: ID!): Movie
-    allRatings: [Rating]
+    # allRatings: [Rating]
   } 
 
   # DEFINE MUTATIONS
@@ -58,7 +58,8 @@ const typeDefs = gql`
     addUser(username: String!, email: String!, password: String!): User
     removeUser(_id: ID!): User
     addFriend(friendId: ID!, userId: ID!): User
-    rateMovie(userID: ID!, userRating: String!): Rating
+    removeFriend(friendId: ID!, userId: ID!): User
+    # rateMovie(userID: ID!, userRating: String!): Rating
   }
 `;
 
