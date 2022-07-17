@@ -1,39 +1,67 @@
 // GRAPHQL RESOLVERS //
 // import AuthenticationError, User/Movie models, and signToken (JWT)
-const { User, Movie, Rating } = require('../models');
+const { User, Movie, Rating, Suggestion } = require('../models');
+const { AuthenticationError } = require('apollo-server-express');
+const { signToken } = require('../utils/auth');
 
 // Best practice: methods should be the same name as the query/mutation that use them
 const resolvers = {
   // QUERY RESOLVERS //
   Query: {
+    // ME - use authenticated user (JWT passed auth) to return logged in user's data; populate
+    // with friends, rated movies, and suggestions
+    me: async (parent, args, context) => {
+      if (context.user) { 
+        const userData = await User.findOne({ _id: context.user._id })
+          .select('-__v -password')
+          .populate('friends')
+          .populate('ratedMovies')
+          .populate('suggestions');
+
+          return userData;
+        }
+
+        throw new AuthenticationError('Not logged in!');
+    },
 
     // USERS - find all users; populate with friend and rated movie data
     users: async () => {
       return User.find()
         .select('-__v -password')
         .populate('friends')
-        .populate('ratedMovies')
+        .populate('ratedMovies');
     },
 
     // USER - find single user (via username); populate with friend and rated movie data
-    user: async (parent, { _id }) => {
-      return User.findOne({ _id })
+    user: async (parent, { username }) => {
+      return User.findOne({ username })
       .select('-__v -password')
       .populate('friends')
-      .populate('ratedMovies')
+      .populate('ratedMovies');
     },
 
-    // ME - use authenticated user (JWT passed auth) to return logged in user's data; populate
-    // with friends, rated movies, and suggestions
-
     // RATEDMOVIES - find all rated movies for specified user; params: username
-    ratedMovies: async (parent, { username }) => {
-      return User.findOne({ username })
-        .select('-__v -password')
-        .populate('ratedMovies')
+    ratedMovies: async (parent, { userId }) => {
+      const ratedMovieData = await Rating.findOne({ user: userId })
+      .select('-__v')
+      .populate('user');
+
+      return ratedMovieData;
     },
 
     // SUGGESTIONS - find all movies suggested to logged in user(context)
+    suggestedMovies: async (parent, { userId }, context) => {
+      if (context.user) {
+        const suggestedMovies = await Suggestion.findOne({ suggestedTo: userId })
+        .select('-__v')
+        .populate('movie')
+        .populate('suggestedBy');
+
+        return suggestedMovies;
+      };
+
+      throw new AuthenticationError('Not logged in!');
+    },
 
     // ALL MOVIES - find all movies saved in db
     allMovies: async () => {
@@ -48,11 +76,6 @@ const resolvers = {
         .select('-__v')
         .populate('rating')
     },
-
-    // allRatings: async () => {
-    //   return Rating.find()
-    //     .populate('user')
-    // },
   },
 
   // MUTATION RESOLVERS //
@@ -61,8 +84,31 @@ const resolvers = {
     // { token, user }
     addUser: async (parent, args) => {
       const user = await User.create(args);
+      const token = signToken(user);
 
-      return user;
+      return { token, user };
+    },
+
+    // LOGIN - find a user by email, throw AuthenticationError if user is not found; use bcrypt
+    // isCorrectPassword(password) to check password, throw AuthenticationError if password
+    // is incorrect; assign JWT with signToken; return { token, user }
+    login: async (parent, { email, password }) => {
+      const user = await User.findOne({ email });
+
+      // if user is not found, throw AuthenticationError
+      if (!user) {
+        throw new AuthenticationError('Login failed. Please check credentials.');
+      }
+
+      const correctPw = await user.isCorrectPassword(password);
+
+      // if password is incorrect, throw AuthenticationError
+      if (!correctPw) {
+        throw new AuthenticationError('Login failed. Please check credentials.');
+      }
+
+      const token = await signToken(user);
+      return { token, user };
     },
     
     // REMOVEUSER - remove user from DB using username/id
@@ -75,14 +121,18 @@ const resolvers = {
     // ADDFRIEND - find/update logged in user via context; add friendId to User's friends array;
     // return updated user data
     // CHANGE USERID TO CONTEXT WHEN FINISHED WITH JWT SECTION
-    addFriend: async (parent, { friendId, userId }) => {
-      const updatedUser = await User.findOneAndUpdate(
-        { _id: userId },
+    addFriend: async (parent, { friendId }, context) => {
+      if (context.user) {
+        const updatedUser = await User.findOneAndUpdate(
+        { _id: context.user._id },
         { $addToSet: { friends: friendId } },
         { new: true }
-      ).populate('friends');
+        ).populate('friends');
 
-      return updatedUser;
+        return updatedUser;
+      }
+
+      throw new AuthenticationError('You must be logged in!');
     },
 
     // REMOVEFRIEND - find/update logged in user via context; remove friendId from User's friends
@@ -96,32 +146,87 @@ const resolvers = {
 
       return updatedUser;
     },
+
     // ADDMOVIE - scrape movie title from API query params, create new Movie in DB
+    addMovie: async (parent, args, context) => {
+      if (context.user) {
+        const newMovie = await Movie.create({ ...args });
+        
+        return newMovie;
+      };
+
+      throw new AuthenticationError('You must be logged in!');
+    },
   
     // RATEMOVIE - find Movie by title, if no Movie is found create new Movie with ADDMOVIE; push
     // rating and username(context) to Movie's rating array
-    // rateMovie: async (parent, { userRating, userId }) => {
-    //   // create new rating object with user's rating and id
-    //   const newRating = await Rating.create({ rating: userRating, user: userId });
+    rateMovie: async (parent, { userRating, reviewBody, imdbID }, context) => {
+      if (context.user) {
+        const userId = context.user._id;
 
-    //   // // then push new rating to the Movie
-    //   // const updatedMovie = await Movie.findOneAndUpdate(
-    //   //   { _id: movieId },
-    //   //   { $addToSet: { rating: { ratingId } } },
-    //   //   { new: true, runValidators: true }
-    //   // );
-      
-    //   return newRating;
-    // }
+        const newRating = await Rating.create(
+            { 
+              imdbID: imdbID,
+              rating: userRating, 
+              reviewBody: reviewBody,
+              user: userId
+            }
+          );
 
+        return newRating;
+      };
+
+      throw new AuthenticationError('You must be logged in!');
+    },
+
+    // ADDTORATED - adds newly added movie to ratedMovies array on User
+    addToRated: async (parent, { movieId }, context) => {
+      if (context.user) {
+        const updatedUser = await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $addToSet: { ratedMovies: movieId } },
+          { new: true, runValidators: true }
+        );
+
+        return updatedUser;
+      };
+
+      throw new AuthenticationError('You must be logged in!');
+    },
+
+    // SUGGESTMOVIE - create new suggestion using logged in user's id, selected friend id, and
+    // movie id
+    suggestMovie: async (parent, { movieId, friendId }, context) => {
+      if (context.user) {
+        const newSuggestion = await Suggestion.create(
+          {
+            movie: movieId,
+            suggestedBy: context.user._id,
+            suggestedTo: friendId
+          }
+        );
+
+        return newSuggestion;
+      };
+
+      throw new AuthenticationError('You must be logged in!');
+    },
+
+    // REMOVESUGGESTION - remove movie from logged in user's suggestions list
+    removeSuggestion: async (parent, { suggestionId }, context) => {
+      if (context.user) {
+        const updatedUser = await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $pull: { suggestions: suggestionId } },
+          { new: true }
+        );
+
+        return updatedUser;
+      };
+
+      throw new AuthenticationError('You must be logged in!');
+    },
   }
-
-
-  // LOGIN - find a user by email, throw AuthenticationError if user is not found; use bcrypt
-  // isCorrectPassword(password) to check password, throw AuthenticationError if password
-  // is incorrect; assign JWT with signToken; return { token, user }
-
-
 };
 
 // export resolvers
