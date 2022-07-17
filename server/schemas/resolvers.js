@@ -37,18 +37,31 @@ const resolvers = {
       return User.findOne({ username })
       .select('-__v -password')
       .populate('friends')
-      .populate('ratedMovies')
-      .populate('suggestions');
+      .populate('ratedMovies');
     },
 
     // RATEDMOVIES - find all rated movies for specified user; params: username
-    // ratedMovies: async (parent, { userId }) => {
-    //   return User.findOne({ userId })
-    //     .select('-__v')
-    //     .populate('ratedMovies')
-    // },
+    ratedMovies: async (parent, { userId }) => {
+      const ratedMovieData = await Rating.findOne({ user: userId })
+      .select('-__v')
+      .populate('user');
+
+      return ratedMovieData;
+    },
 
     // SUGGESTIONS - find all movies suggested to logged in user(context)
+    suggestedMovies: async (parent, { userId }, context) => {
+      if (context.user) {
+        const suggestedMovies = await Suggestion.findOne({ suggestedTo: userId })
+        .select('-__v')
+        .populate('movie')
+        .populate('suggestedBy');
+
+        return suggestedMovies;
+      };
+
+      throw new AuthenticationError('Not logged in!');
+    },
 
     // ALL MOVIES - find all movies saved in db
     allMovies: async () => {
@@ -194,6 +207,21 @@ const resolvers = {
         );
 
         return newSuggestion;
+      };
+
+      throw new AuthenticationError('You must be logged in!');
+    },
+
+    // REMOVESUGGESTION - remove movie from logged in user's suggestions list
+    removeSuggestion: async (parent, { suggestionId }, context) => {
+      if (context.user) {
+        const updatedUser = await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $pull: { suggestions: suggestionId } },
+          { new: true }
+        );
+
+        return updatedUser;
       };
 
       throw new AuthenticationError('You must be logged in!');

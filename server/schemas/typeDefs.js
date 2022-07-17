@@ -53,10 +53,10 @@ const typeDefs = gql`
     me: User
     users: [User]
     user(username: String!): User
-    # ratedMovies(userId: ID!): User
     allMovies: [Movie]
     singleMovie(_id: ID!): Movie
-    # allRatings: [Rating]
+    ratedMovies(userId: ID!): Rating
+    suggestedMovies(userId: ID!): Suggestion
   } 
 
   # DEFINE MUTATIONS
@@ -71,6 +71,7 @@ const typeDefs = gql`
     rateMovie(userRating: String!, reviewBody: String!, imdbID: String!): Rating
     addToRated(movieId: ID!): User
     suggestMovie(movieId: ID!, friendId: ID!): Suggestion
+    removeSuggestion(suggestionId: ID!): Suggestion
   }
 `;
 

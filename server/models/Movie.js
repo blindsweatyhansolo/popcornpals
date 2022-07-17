@@ -3,9 +3,7 @@
 // AND/OR rates / suggests to another friend, the title gets scraped from the query and
 // used to create a new Movie document. This ensures only Movies that have been rated or
 // suggested are added to the DB, instead of a massive collection
-
 const { Schema, model } = require('mongoose');
-const User  = require('./User');
 
 // define Movie schema
 const movieSchema = new Schema(

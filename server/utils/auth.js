@@ -5,7 +5,7 @@ require('dotenv').config();
 
 // define hidden secret key and expiration
 const secret = process.env.JWT_SECRET;
-const expiration = '2h';
+const expiration = '24h';
 
 module.exports = {
   // signToken function for assigning a JWT
