@@ -28,7 +28,9 @@ const typeDefs = gql`
   # Rating type definition
   type Rating {
     _id: ID
+    imdbID: String
     rating: String
+    reviewBody: String
     user: [User]
   }
 
@@ -36,6 +38,7 @@ const typeDefs = gql`
   type Suggestion {
     movie: [Movie]
     suggestedBy: [User]
+    suggestedTo: [User]
   }
 
   # Auth type definition (JWT)
@@ -49,9 +52,8 @@ const typeDefs = gql`
   type Query {
     me: User
     users: [User]
-    user(_id: ID!): User
-    ratedMovies(username: String!): User
-    # suggestions(username: String!): User
+    user(username: String!): User
+    # ratedMovies(userId: ID!): User
     allMovies: [Movie]
     singleMovie(_id: ID!): Movie
     # allRatings: [Rating]
@@ -63,9 +65,12 @@ const typeDefs = gql`
     addUser(username: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
     removeUser(_id: ID!): User
-    addFriend(friendId: ID!, userId: ID!): User
+    addFriend(friendId: ID!): User
     removeFriend(friendId: ID!, userId: ID!): User
-    # rateMovie(userID: ID!, userRating: String!): Rating
+    addMovie(imdbID: String!, title: String!): Movie
+    rateMovie(userRating: String!, reviewBody: String!, imdbID: String!): Rating
+    addToRated(movieId: ID!): User
+    suggestMovie(movieId: ID!, friendId: ID!): Suggestion
   }
 `;
 

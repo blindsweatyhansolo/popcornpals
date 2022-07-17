@@ -5,6 +5,7 @@
 // suggested are added to the DB, instead of a massive collection
 
 const { Schema, model } = require('mongoose');
+const User  = require('./User');
 
 // define Movie schema
 const movieSchema = new Schema(
