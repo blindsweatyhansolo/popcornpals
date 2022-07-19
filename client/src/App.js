@@ -1,6 +1,17 @@
 import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // base css script
 import './index.css';
+
+// components
+import Footer from './components/Footer';
+// pages
+import Landing from './pages/Landing';
+import Home from './pages/Home';
+import LoginSignup from './pages/LoginSignup';
+import Profile from './pages/Profile';
+import Details from './pages/Details';
+import NoMatch from './pages/NoMatch';
 
 // create connection to backend server
 const httpLink = createHttpLink({
@@ -16,13 +27,21 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client} >
-      <div className="App">
-        <header className="App-header">
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-        </header>
-      </div>
+      <Router>
+        <div className=''>
+          <div className='container'>
+            <Routes>
+              <Route path='/' element={<Landing />} />
+              <Route path='/home' element={<Home />} />
+              <Route path='/login' element={<LoginSignup />} />
+              <Route path='/profile' element={<Profile />} />
+              <Route path='/details' element={<Details />} />
+              <Route path='*' element={<NoMatch />} />
+            </Routes>
+          </div>
+          <Footer />
+        </div>
+      </Router>
     </ApolloProvider>
   );
 }

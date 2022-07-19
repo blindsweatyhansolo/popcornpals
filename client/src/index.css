@@ -5,10 +5,18 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: red;
+
+  background-color: #141414;
+  color: #ffffff;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* allows for horizontal scrolling of elements */
+.movie-app > .row {
+  overflow-x: auto;
+  flex-wrap: nowrap;
 }
