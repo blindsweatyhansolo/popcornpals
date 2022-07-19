@@ -13,8 +13,8 @@ db.once('open', async () => {
   // create empty user data array
   const userData = [];
 
-  // loop for creating 10 users
-  for (let i = 0; i < 10; i += 1) {
+  // loop for creating 5 users
+  for (let i = 0; i < 5; i += 1) {
     const username = faker.internet.userName();
     const email = faker.internet.email(username);
     const password = faker.internet.password();
@@ -41,18 +41,18 @@ db.once('open', async () => {
     await User.updateOne({ _id: userId }, { $addToSet: { friends: friendId } });
   }
 
-  // create movies
-  const movieData = [];
+  // // create movies
+  // const movieData = [];
 
-  // loop for creating 5 movies
-  for (let i = 0; i < 5; i += 1){
-    const imdbID = faker.internet.password(8);
-    const title = faker.lorem.words(3);
+  // // loop for creating 5 movies
+  // for (let i = 0; i < 5; i += 1){
+  //   const imdbID = faker.internet.password(8);
+  //   const title = faker.lorem.words(3);
 
-    const createdMovie = await Movie.create({ imdbID, title });
+  //   const createdMovie = await Movie.create({ imdbID, title });
 
-    movieData.push(createdMovie);
-  }
+  //   movieData.push(createdMovie);
+  // }
 
   console.log('FAKE DATA CREATED');
   process.exit(0);

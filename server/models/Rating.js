@@ -36,9 +36,9 @@ const ratingSchema = new Schema(
 
 // middleware to handle new rating being pushed to rated Movie's rating array
 ratingSchema.post('save', async (newRating) => {
-  const updatedMovie = await Movie.findOneAndUpdate(
+  await Movie.findOneAndUpdate(
     { imdbID: newRating.imdbID },
-    { $push: { rating: newRating._id } },
+    { $addToSet: { rating: newRating._id } },
     { new: true }
     );
 });
