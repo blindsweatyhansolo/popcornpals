@@ -42,7 +42,7 @@ const resolvers = {
 
     // RATEDMOVIES - find all rated movies for specified user; params: username
     ratedMovies: async (parent, { userId }) => {
-      const ratedMovieData = await Rating.findOne({ user: userId })
+      const ratedMovieData = await Rating.find({ user: userId })
       .select('-__v')
       .populate('user');
 
@@ -52,7 +52,7 @@ const resolvers = {
     // SUGGESTIONS - find all movies suggested to logged in user(context)
     suggestedMovies: async (parent, { userId }, context) => {
       if (context.user) {
-        const suggestedMovies = await Suggestion.findOne({ suggestedTo: userId })
+        const suggestedMovies = await Suggestion.find({ suggestedTo: userId })
         .select('-__v')
         .populate('movie')
         .populate('suggestedBy');
@@ -74,8 +74,15 @@ const resolvers = {
     singleMovie: async (parent, { _id }) => {
       return Movie.findOne({ _id })
         .select('-__v')
-        .populate('rating')
+        .populate('rating');
     },
+
+    // MOVIERATINGS - find all ratings for a single movie
+    // movieRatings: async (parent, { imdbID }) => {
+    //   return Rating.find({ imdbID: imdbID })
+    //   .select('-__v')
+    //   .populate('user')
+    // },
   },
 
   // MUTATION RESOLVERS //
@@ -186,7 +193,7 @@ const resolvers = {
           { _id: context.user._id },
           { $addToSet: { ratedMovies: movieId } },
           { new: true, runValidators: true }
-        );
+        ).populate('ratedMovies');
 
         return updatedUser;
       };

@@ -57,6 +57,7 @@ const typeDefs = gql`
     singleMovie(_id: ID!): Movie
     ratedMovies(userId: ID!): Rating
     suggestedMovies(userId: ID!): Suggestion
+    # movieRatings(imdbID: String!): Rating
   } 
 
   # DEFINE MUTATIONS
