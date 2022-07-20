@@ -2,7 +2,7 @@
 // RATINGLIST - displays all possible ratings for single movie based on imdbID if available
 // RATEFORM / SUGGESTFORM - hidden if user is not logged in
 
-const Details = () => {
+const Details = (props) => {
   return (
     <div>
       SINGLE MOVIE DETAIL PAGE

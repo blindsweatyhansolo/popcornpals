@@ -1,0 +1,26 @@
+{
+  "name": "popcornpals",
+  "version": "1.0.0",
+  "description": "Rate and suggest movies to your friends!",
+  "main": "index.js",
+  "devDependencies": {
+    "concurrently": "^7.3.0"
+  },
+  "scripts": {
+    "start": "node server/server.js",
+    "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
+    "install": "cd server && npm i && cd ../client && npm i",
+    "seed": "cd server && npm run seed"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blindsweatyhansolo/popcornpals.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/blindsweatyhansolo/popcornpals/issues"
+  },
+  "homepage": "https://github.com/blindsweatyhansolo/popcornpals#readme"
+}

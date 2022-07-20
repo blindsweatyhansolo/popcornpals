@@ -155,14 +155,10 @@ const resolvers = {
     },
 
     // ADDMOVIE - scrape movie title from API query params, create new Movie in DB
-    addMovie: async (parent, args, context) => {
-      if (context.user) {
-        const newMovie = await Movie.create({ ...args });
+    addMovie: async (parent, args) => {
+      const newMovie = await Movie.create({ ...args });
         
-        return newMovie;
-      };
-
-      throw new AuthenticationError('You must be logged in!');
+      return newMovie;
     },
   
     // RATEMOVIE - find Movie by title, if no Movie is found create new Movie with ADDMOVIE; push

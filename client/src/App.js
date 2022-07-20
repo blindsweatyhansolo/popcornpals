@@ -16,7 +16,7 @@ import NoMatch from './pages/NoMatch';
 
 // create connection to backend server
 const httpLink = createHttpLink({
-  uri: 'http://localhost:3001/graphql'
+  uri: '/graphql'
 });
 
 // instantiate apollo client instance and create connection to the API endpoint
