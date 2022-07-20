@@ -29,7 +29,8 @@ const resolvers = {
       return User.find()
         .select('-__v -password')
         .populate('friends')
-        .populate('ratedMovies');
+        .populate('ratedMovies')
+        .populate('suggestions');
     },
 
     // USER - find single user (via username); populate with friend and rated movie data
@@ -50,14 +51,14 @@ const resolvers = {
     },
 
     // SUGGESTIONS - find all movies suggested to logged in user(context)
-    suggestedMovies: async (parent, { userId }, context) => {
+    suggestedMovies: async (parent, { suggestedTo }, context) => {
       if (context.user) {
-        const suggestedMovies = await Suggestion.find({ suggestedTo: userId })
-        .select('-__v')
-        .populate('movie')
-        .populate('suggestedBy');
+        const suggestedTo = context.user._id;
 
-        return suggestedMovies;
+        const suggestion = await Suggestion.find({ suggestedTo: suggestedTo })
+          .populate('movie');
+
+        return suggestion;
       };
 
       throw new AuthenticationError('Not logged in!');
@@ -76,13 +77,6 @@ const resolvers = {
         .select('-__v')
         .populate('rating');
     },
-
-    // MOVIERATINGS - find all ratings for a single movie
-    // movieRatings: async (parent, { imdbID }) => {
-    //   return Rating.find({ imdbID: imdbID })
-    //   .select('-__v')
-    //   .populate('user')
-    // },
   },
 
   // MUTATION RESOLVERS //
@@ -204,7 +198,7 @@ const resolvers = {
         const newSuggestion = await Suggestion.create(
           {
             movie: movieId,
-            suggestedBy: context.user._id,
+            suggestedBy: context.user.username,
             suggestedTo: friendId
           }
         );

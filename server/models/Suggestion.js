@@ -13,13 +13,17 @@ const suggestionSchema = new Schema(
       ref: 'Movie'
       }
     ],
-    // suggestedBy is the current logged in user's id
-    suggestedBy: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-      }
-    ],
+    // suggestedBy is the current logged in user's username
+    suggestedBy: {
+      type: String,
+      required: true
+    },
+    // [
+    //   {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'User'
+    //   }
+    // ],
     // suggestedTo is the logged in user's selected friend id
     suggestedTo: [
       {
