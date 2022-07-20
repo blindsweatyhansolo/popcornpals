@@ -17,6 +17,14 @@ const movieSchema = new Schema(
       type: String,
       required: true
     },
+    year: {
+      type: String,
+      required: true
+    },
+    poster: {
+      type: String,
+      required: true
+    },
     // reference to ratingSchema which holds a user ID and their rating for this movie
     rating: [
       {

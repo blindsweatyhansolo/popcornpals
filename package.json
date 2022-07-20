@@ -2,7 +2,7 @@
   "name": "popcornpals",
   "version": "1.0.0",
   "description": "Rate and suggest movies to your friends!",
-  "main": "index.js",
+  "main": "server/server.js",
   "devDependencies": {
     "concurrently": "^7.3.0"
   },
