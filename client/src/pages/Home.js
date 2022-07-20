@@ -1,14 +1,11 @@
-import Header from '../components/Header';
+import MovieList from '../components/MovieList';
+import SuggestionList from '../components/SuggestionList';
 
 const Home = () => {
   return (
-    <main>
-      <Header />
-      <div>
-        HOMEPAGE
-      </div>
-    </main>
-
+    <div>
+      HOMEPAGE
+    </div>
   );
 };
 

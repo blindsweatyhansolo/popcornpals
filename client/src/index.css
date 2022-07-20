@@ -15,6 +15,10 @@ code {
     monospace;
 }
 
+a {
+  text-decoration: none;
+}
+
 /* allows for horizontal scrolling of elements */
 .movie-app > .row {
   overflow-x: auto;

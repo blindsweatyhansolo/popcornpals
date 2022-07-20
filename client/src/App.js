@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './index.css';
 
 // components
+import Header from './components/Header';
 import Footer from './components/Footer';
 // pages
 import Landing from './pages/Landing';
@@ -29,6 +30,7 @@ function App() {
     <ApolloProvider client={client} >
       <Router>
         <div className=''>
+          <Header />
           <div className='container'>
             <Routes>
               <Route path='/' element={<Landing />} />

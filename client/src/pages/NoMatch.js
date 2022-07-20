@@ -2,7 +2,7 @@
 const NoMatch = () => {
   return (
     <div>
-      404 NO MATCHING PAGE FOUND!
+      404: PAGE NOT FOUND!
     </div>
   );
 };

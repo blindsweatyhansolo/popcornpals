@@ -2,22 +2,47 @@ import { Link } from 'react-router-dom';
 
 
 const Header = () => {
+  // handle logout with Auth
+  const logout = event => {
+    event.preventDefault();
+    // Auth.logout();
+  }
   return (
-    <header className='bg-dark mb-4 py-2 flew-row justify-content-between'>
-      <nav className='navbar navbar-expand-lg'>
+    <nav className='navbar navbar-expand-lg bg-light'>
+      <div className='container-fluid'>
         <Link to= '/home'>
-            <h1>Popcorn Pals</h1>
-            <span className='navbar-text'>Share movies with your friends!</span>
+            <h1 className='navbar-brand'>🍿Popcorn Pals🍿</h1>
         </Link>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-        <form className='form'>
-          <input className='form-control mr-sm-2' type='search' placeholder='Search titles...' />
-          <button type='submit'>Search</button>
-        </form>
-        {/* USE AUTH TO EITHER SHOW LOGIN/SIGNUP OR ACCOUNT/LOGOUT */}
-        <Link to='/login'>LOGIN/SIGNUP</Link>
-      </nav>
-    </header>
+        <div className='collapse navbar-collapse' id='navbarSupportedContent'>
+          <ul className='navbar-nav'>
+            <li className='nav-item'>
+
+              <form className='form-inline my-2 my-lg-0 d-flex'>
+                <input className='form-control mr-sm-2' type='search' placeholder='Search for titles' />
+                <button className='btn btn-primary' type='submit'>Search</button>
+              </form>
+            </li>
+            <li className='nav-item'>
+              <Link to='/profile' className='nav-link'>Profile</Link>
+            </li>
+            <li className='nav-item'>
+              <a href='/' onClick={logout} className='nav-link'>Logout</a>
+            </li>
+
+            <li className='nav-item'>
+              {/* USE AUTH TO EITHER SHOW LOGIN/SIGNUP OR ACCOUNT/LOGOUT */}
+              <Link to='/login' className='nav-link'>
+                Login / Sign-up
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
   );
 };
 
