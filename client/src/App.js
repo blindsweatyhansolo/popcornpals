@@ -31,7 +31,7 @@ function App() {
       <Router>
         <div className=''>
           <Header />
-          <div className='container'>
+          <div className=''>
             <Routes>
               <Route path='/' element={<Landing />} />
               <Route path='/home' element={<Home />} />
