@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom';
-
+import Auth from '../../utils/auth';
 
 const Header = () => {
   // handle logout with Auth
   const logout = event => {
     event.preventDefault();
-    // Auth.logout();
+    Auth.logout();
   }
+  
   return (
     <nav className='navbar navbar-expand-lg bg-light'>
       <div className='container-fluid'>
@@ -29,7 +30,12 @@ const Header = () => {
             <li className='nav-item'>
               {/* USE AUTH TO EITHER SHOW LOGIN/SIGNUP OR ACCOUNT/LOGOUT */}
               <Link to='/login' className='nav-link'>
-                Login / Sign-up
+                Login
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link to='/signup' className='nav-link'>
+                Sign Up
               </Link>
             </li>
           </ul>
