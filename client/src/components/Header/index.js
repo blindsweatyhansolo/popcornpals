@@ -7,7 +7,7 @@ const Header = () => {
     event.preventDefault();
     Auth.logout();
   }
-  
+
   return (
     <nav className='navbar navbar-expand-lg bg-light'>
       <div className='container-fluid'>
@@ -20,24 +20,31 @@ const Header = () => {
 
         <div className='collapse navbar-collapse' id='navbarSupportedContent'>
           <ul className='navbar-nav'>
-            <li className='nav-item'>
-              <Link to='/profile' className='nav-link'>Profile</Link>
-            </li>
-            <li className='nav-item'>
-              <a href='/' onClick={logout} className='nav-link'>Logout</a>
-            </li>
-
-            <li className='nav-item'>
-              {/* USE AUTH TO EITHER SHOW LOGIN/SIGNUP OR ACCOUNT/LOGOUT */}
-              <Link to='/login' className='nav-link'>
-                Login
-              </Link>
-            </li>
-            <li className='nav-item'>
-              <Link to='/signup' className='nav-link'>
-                Sign Up
-              </Link>
-            </li>
+            
+            {Auth.loggedIn() ? (
+              <>
+              <li className='nav-item'>
+                <Link to='/profile' className='nav-link'>Profile</Link>
+              </li>
+              <li className='nav-item'>
+                <a href='/' onClick={logout} className='nav-link'>Logout</a>
+              </li>
+              </>
+            ) : (
+              <>
+              <li className='nav-item'>
+                {/* USE AUTH TO EITHER SHOW LOGIN/SIGNUP OR ACCOUNT/LOGOUT */}
+                <Link to='/login' className='nav-link'>
+                  Login
+                </Link>
+              </li>
+              <li className='nav-item'>
+                <Link to='/signup' className='nav-link'>
+                  Sign Up
+                </Link>
+              </li>
+              </>
+            )}
           </ul>
         </div>
       </div>

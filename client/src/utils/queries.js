@@ -1,15 +1,18 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_SUGGESTIONS = gql`
-  query suggestedMovies($userId: ID) {
-    suggestedMovies(userId: $userId) {
-      _id
+  query suggestedMovies {
+    suggestedMovies {
+      # _id
       movie {
         _id
         imdbID
         title
+        year
+        poster
       }
-      suggestedBy {
+      suggestedBy
+      suggestedTo {
         _id
         username
       }

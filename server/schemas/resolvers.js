@@ -51,14 +51,16 @@ const resolvers = {
     },
 
     // SUGGESTIONS - find all movies suggested to logged in user(context)
-    suggestedMovies: async (parent, { suggestedTo }, context) => {
+    suggestedMovies: async (parent, args, context) => {
       if (context.user) {
-        const suggestedTo = context.user._id;
+        // const suggestedTo = context.user._id;
+        // // const userId = context.user._id;
 
-        const suggestion = await Suggestion.find({ suggestedTo: suggestedTo })
-          .populate('movie');
+        const suggestionData = await Suggestion.find({ suggestedTo: context.user._id })
+          .populate('movie')
+          .populate('suggestedTo');
 
-        return suggestion;
+        return suggestionData;
       };
 
       throw new AuthenticationError('Not logged in!');

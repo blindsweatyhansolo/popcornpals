@@ -58,7 +58,8 @@ const typeDefs = gql`
     allMovies: [Movie]
     singleMovie(_id: ID!): Movie
     ratedMovies(userId: ID!): Rating
-    suggestedMovies(suggestedTo: ID!): [Suggestion]
+    # suggestedMovies(suggestedTo: ID!): [Suggestion]
+    suggestedMovies: [Suggestion]
     # movieRatings(imdbID: String!): Rating
   } 
 
