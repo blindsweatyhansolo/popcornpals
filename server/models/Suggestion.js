@@ -7,12 +7,16 @@ const User = require('./User');
 
 const suggestionSchema = new Schema(
   {
-    movie: [
-      {
-      type: Schema.Types.ObjectId,
-      ref: 'Movie'
-      }
-    ],
+    imdbID: {
+      type: String,
+      required: true
+    },
+    // movie: [
+    //   {
+    //   type: Schema.Types.ObjectId,
+    //   ref: 'Movie'
+    //   }
+    // ],
     // suggestedBy is the current logged in user's username
     suggestedBy: {
       type: String,

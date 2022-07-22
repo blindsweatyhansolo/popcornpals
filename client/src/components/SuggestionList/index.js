@@ -1,55 +1,53 @@
 import { useState, useEffect } from 'react';
-import { useLazyQuery } from '@apollo/client';
-import { QUERY_SUGGESTIONS } from '../../utils/queries';
 import { Link } from 'react-router-dom';
 
-const SuggestionList = () => {
-  const [suggestedMovies, setSuggestedMovies] = useState([]);
-  const [getSuggestions, { loading, data }] = useLazyQuery(QUERY_SUGGESTIONS);
-  
-  useEffect(() => {
-    fetchSuggestedMovies();
-  }, []);
+const SuggestionList = (props) => {
+  const [movies, setMovies] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
+
+  useEffect(()=> {
+    // grab the imdbID from passed in props for the fetch request
+    let searchValue = props.movies.map((movie) => movie.imdbID);
+
+    setSearchValue(searchValue);
+    getSuggestedMovieRequest(searchValue);
+    // set [props] so useEffect doesn't run before props passed in from parent
+  }, [props]);
 
 
-  if (loading) {
-    return <p>LOADING . . .</p>
-  };
+    // function to handle suggestions requests from OMDb API
+  const getSuggestedMovieRequest = async (searchValue) => {
+    const suggestedMovies = await Promise.all(
+      searchValue.map(async (value) => {
+        const imdbID = value;
 
-  
-  const fetchSuggestedMovies = async () => {
-    const suggestions = await getSuggestions();
-    const suggestedData = suggestions.data.suggestedMovies;
+        const url = `http://www.omdbapi.com/?i=${imdbID}&apikey=b389d5bc`;
 
-    // console.log(suggestedData);
+        const suggestionResponse = await fetch(url);
+        const suggestionResponseJson = await suggestionResponse.json();
 
-    if (suggestedData) {
-      setSuggestedMovies(suggestedData);
+        return suggestionResponseJson;
+      })
+    );
+
+    if (suggestedMovies) {
+      setMovies(suggestedMovies);
     }
 
-    return suggestedData;
-
+    return suggestedMovies;
   };
-
-  // console.log(suggestedMovies);
-
 
   return (
     <>
-      {suggestedMovies.map((suggestion, index) => 
-          <Link to={`/details/${suggestion.movie[0].imdbID}`}>
-            <div className='d-flex justify-content-center'>
-              <img src={suggestion.movie[0].poster} alt=''/>
-              <div>
-              {/* <p className='text-light'>{suggestion.movie[0].title}</p> */}
-                <p>Suggested by: {suggestion.suggestedBy}</p>
-              </div>
+      {movies.map((suggestion)=> 
+          <Link to={`/details/${suggestion.imdbID}`} key={suggestion.Title}>
+            <div>
+              <img src={suggestion.Poster} alt=''/>
             </div>
           </Link>
-        )}
+      )}
     </>
-
-  )
+  );
 };
 
 export default SuggestionList;

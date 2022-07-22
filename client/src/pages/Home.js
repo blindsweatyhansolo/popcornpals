@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useLazyQuery } from '@apollo/client';
+import { QUERY_SUGGESTIONS } from '../utils/queries';
 // components
 import SearchBox from '../components/SearchBox';
 import MovieListHeader from '../components/MovieListHeader';
 import MovieList from '../components/MovieList';
 import SuggestionList from '../components/SuggestionList';
-// // queries
+
 import Auth from '../utils/auth';
 
 const Home = () => {
@@ -12,6 +14,11 @@ const Home = () => {
   const [movies, setMovies] = useState([]);
   const [searchValue, setSearchValue] = useState('');
 
+  // state variables for suggestions
+  const [suggestedMovies, setSuggestedMovies] = useState([]);
+  const [getSuggestions, { loading }] = useLazyQuery(QUERY_SUGGESTIONS);
+
+  
   // function to handle search requests from OMDb API
   const getMovieRequest = async (searchValue) => {
     const url = `http://www.omdbapi.com/?s=${searchValue}&apikey=b389d5bc`;
@@ -29,6 +36,30 @@ const Home = () => {
     getMovieRequest(searchValue);
   }, [searchValue]);
 
+  // call fetchSuggestedMovies on load
+  useEffect(() => {
+    fetchSuggestedMovies();
+  }, []);
+
+  if (loading) {
+    return <p>LOADING . . .</p>
+  };
+
+  // function to handle getting suggestions from logged in user
+  const fetchSuggestedMovies = async () => {
+    const suggestions = await getSuggestions();
+    // console.log(suggestions.data);
+
+    const suggestedData = suggestions.data.suggestedMovies;
+    // console.log(suggestedData.imdbID);
+
+    if (suggestedData) {
+      setSuggestedMovies(suggestedData);
+    }
+
+    return suggestedData;
+  };
+
   const loggedIn = Auth.loggedIn();
 
   return (
@@ -40,7 +71,7 @@ const Home = () => {
       <div className='row'>
         <MovieList movies={movies} />
       </div>
-      {/* RENDER SUGGESTIONS SECTION IF LOGGED IN */}
+      {/* RENDER SUGGESTIONS SECTION ONLY IF LOGGED IN */}
       {loggedIn && (
         <>
         <div className='row d-flex align-items-center my-4'>
@@ -48,7 +79,7 @@ const Home = () => {
         </div>
         
         <div className='row'>
-          <SuggestionList />
+          <SuggestionList movies={suggestedMovies} />
         </div>
         </>
       )}

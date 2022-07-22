@@ -6,7 +6,7 @@ const MovieList = (props) => {
     <>
       {props.movies.map((movie) => {
         return (
-          <Link to={`/details/${movie.imdbID}`}>
+          <Link to={`/details/${movie.imdbID}`} key={movie.Title}>
             <div className="d-flex justify-content-center">
               <img src={movie.Poster} alt="movie poster" />
             </div>

@@ -3,6 +3,7 @@
 // RATEFORM / SUGGESTFORM - hidden if user is not logged in
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import SuggestionForm from "../components/SuggestForm";
 const imdbLogo = require('../assets/icons/imdb-icon.png');
 
 const Details = () => {
@@ -30,18 +31,26 @@ const Details = () => {
   }, []);
 
   return (
-    <div className='p-4'>
-      <img src={movie.Poster} alt={`Poster for ${movie.Title}`} />
-      <h1>{movie.Title} ({movie.Year})</h1>
-      <p>{movie.Genre}</p>
-      <p>{movie.Plot}</p>
-      <div>
-        <a href={`https://www.imdb.com/title/${imdbID}/`} target="_blank" rel="noreferrer">
-          <img src={imdbLogo} alt='IMDb Logo'/>
-          <p>{movie.imdbRating}</p>
-        </a>
+    <>
+      <div className='p-4 d-flex flex-wrap'>
+        <div className='col-6'>
+          <img src={movie.Poster} alt={`Poster for ${movie.Title}`} />
+          <h1>{movie.Title} ({movie.Year})</h1>
+          <p>{movie.Genre}</p>
+          <p>{movie.Plot}</p>
+          <div>
+            <a href={`https://www.imdb.com/title/${imdbID}/`} target="_blank" rel="noreferrer">
+              <img src={imdbLogo} alt='IMDb Logo'/>
+              <p>{movie.imdbRating}</p>
+            </a>
+          </div>
+        </div>
+
+        <div className="col-4">
+        <SuggestionForm imdbID={imdbID}/>
+        </div>
       </div>
-    </div>
+    </>
   )
 };
 

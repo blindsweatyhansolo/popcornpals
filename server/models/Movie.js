@@ -11,7 +11,8 @@ const movieSchema = new Schema(
     // omdb ID instead of TITLE
     imdbID: {
       type: String,
-      required: true
+      required: true,
+      unique: true
     },
     title: {
       type: String,

@@ -38,7 +38,8 @@ const resolvers = {
       return User.findOne({ username })
       .select('-__v -password')
       .populate('friends')
-      .populate('ratedMovies');
+      .populate('ratedMovies')
+      .populate('suggestions');
     },
 
     // RATEDMOVIES - find all rated movies for specified user; params: username
@@ -57,7 +58,7 @@ const resolvers = {
         // // const userId = context.user._id;
 
         const suggestionData = await Suggestion.find({ suggestedTo: context.user._id })
-          .populate('movie')
+          // .populate('movie')
           .populate('suggestedTo');
 
         return suggestionData;
@@ -74,8 +75,8 @@ const resolvers = {
     },
 
     // SINGLEMOVIE - find single movie saved in db via id
-    singleMovie: async (parent, { _id }) => {
-      return Movie.findOne({ _id })
+    singleMovie: async (parent, { imdbID }) => {
+      return Movie.findOne({ imdbID })
         .select('-__v')
         .populate('rating');
     },
@@ -151,10 +152,19 @@ const resolvers = {
     },
 
     // ADDMOVIE - scrape movie title from API query params, create new Movie in DB
-    addMovie: async (parent, args) => {
-      const newMovie = await Movie.create({ ...args });
-        
-      return newMovie;
+    addMovie: async (parent, { imdbID, title, year, poster }) => {
+      // check if movie is already in dB
+      const movie = await Movie.findOne({ imdbID });
+
+      if (movie) {
+        return movie;
+      } else {
+        const newMovie = await Movie.create(
+          { imdbID: imdbID, title: title, year: year, poster: poster}
+        );
+          
+        return newMovie;
+      }
     },
   
     // RATEMOVIE - find Movie by title, if no Movie is found create new Movie with ADDMOVIE; push
@@ -195,13 +205,30 @@ const resolvers = {
 
     // SUGGESTMOVIE - create new suggestion using logged in user's id, selected friend id, and
     // movie id
-    suggestMovie: async (parent, { movieId, friendId }, context) => {
+    suggestMovie: async (parent, { imdbID, friendId }, context) => {
       if (context.user) {
         const newSuggestion = await Suggestion.create(
           {
-            movie: movieId,
+            imdbID: imdbID,
+            // movie: movieId,
             suggestedBy: context.user.username,
             suggestedTo: friendId
+          }
+        );
+
+        return newSuggestion;
+      };
+
+      throw new AuthenticationError('You must be logged in!');
+    },
+
+    suggestToMyselfTest: async (parent, { friendId, imdbID }, context) => {
+      if (context.user) {
+        const newSuggestion = await Suggestion.create(
+          {
+            imdbID: imdbID,
+            suggestedBy: friendId,
+            suggestedTo: context.user._id
           }
         );
 

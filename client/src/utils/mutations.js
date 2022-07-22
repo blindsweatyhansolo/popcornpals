@@ -50,3 +50,29 @@ export const REMOVE_FRIEND = gql`
     }
   }
 `;
+
+export const SUGGEST_MOVIE = gql`
+  mutation suggestMovie($movieId: ID!, $friendId: ID!) {
+    suggestMovie(movieId: $movieId, friendId: $friendId) {
+      movie {
+        _id
+      }
+      suggestedBy
+      suggestedTo {
+        _id
+      }
+    }
+  }
+`;
+
+export const ADD_MOVIE = gql`
+  mutation AddMovie($imdbId: String!, $title: String!, $year: String!, $poster: String!) {
+    addMovie(imdbID: $imdbId, title: $title, year: $year, poster: $poster) {
+      _id
+      imdbID
+      title
+      year
+      poster
+    }
+}
+`;
