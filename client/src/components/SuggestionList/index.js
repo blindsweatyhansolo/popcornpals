@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useQuery, useLazyQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import { QUERY_SUGGESTIONS } from '../../utils/queries';
+import { Link } from 'react-router-dom';
 
 const SuggestionList = () => {
   const [suggestedMovies, setSuggestedMovies] = useState([]);
@@ -20,7 +21,7 @@ const SuggestionList = () => {
     const suggestions = await getSuggestions();
     const suggestedData = suggestions.data.suggestedMovies;
 
-    console.log(suggestedData);
+    // console.log(suggestedData);
 
     if (suggestedData) {
       setSuggestedMovies(suggestedData);
@@ -30,17 +31,21 @@ const SuggestionList = () => {
 
   };
 
-  console.log(suggestedMovies);
+  // console.log(suggestedMovies);
 
 
   return (
     <>
       {suggestedMovies.map((suggestion, index) => 
-        <div>
-          <img src={suggestion.movie[0].poster} alt=''/>
-          <p className='text-light'>{suggestion.movie[0].title}</p>
-          {/* <p>Suggested by: {suggestion.suggestedBy}</p> */}
-        </div>
+          <Link to={`/details/${suggestion.movie[0].imdbID}`}>
+            <div className='d-flex justify-content-center'>
+              <img src={suggestion.movie[0].poster} alt=''/>
+              <div>
+              {/* <p className='text-light'>{suggestion.movie[0].title}</p> */}
+                <p>Suggested by: {suggestion.suggestedBy}</p>
+              </div>
+            </div>
+          </Link>
         )}
     </>
 

@@ -34,7 +34,7 @@ const Home = () => {
   return (
     <div className='container-fluid movie-app'>
       <div className='row d-flex align-items-center my-4'>
-        <MovieListHeader heading='Movies' />
+        <MovieListHeader heading='Find Movies' />
         <SearchBox searchValue={searchValue} setSearchValue={setSearchValue} />
       </div>
       <div className='row'>
@@ -44,10 +44,10 @@ const Home = () => {
       {loggedIn && (
         <>
         <div className='row d-flex align-items-center my-4'>
-          <MovieListHeader heading='Suggestions' />
+          <MovieListHeader heading='My Suggestions' />
         </div>
         
-        <div className=''>
+        <div className='row'>
           <SuggestionList />
         </div>
         </>

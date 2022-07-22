@@ -53,7 +53,7 @@ function App() {
               <Route path='/login' element={<Login />} />
               <Route path='/signup' element={<Signup />} />
               <Route path='/profile' element={<Profile />} />
-              <Route path='/details' element={<Details />} />
+              <Route path='/details/:imdbID' element={<Details />} />
               <Route path='*' element={<NoMatch />} />
             </Routes>
           </div>
