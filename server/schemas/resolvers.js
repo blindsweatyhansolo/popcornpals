@@ -204,13 +204,13 @@ const resolvers = {
     },
 
     // SUGGESTMOVIE - create new suggestion using logged in user's id, selected friend id, and
-    // movie id
+    // movie imdbID
     suggestMovie: async (parent, { imdbID, friendId }, context) => {
       if (context.user) {
+
         const newSuggestion = await Suggestion.create(
           {
             imdbID: imdbID,
-            // movie: movieId,
             suggestedBy: context.user.username,
             suggestedTo: friendId
           }

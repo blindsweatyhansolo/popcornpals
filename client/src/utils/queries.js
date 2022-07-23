@@ -3,20 +3,8 @@ import { gql } from '@apollo/client';
 export const QUERY_SUGGESTIONS = gql`
   query suggestedMovies {
     suggestedMovies {
-      # _id
-      # movie {
-      #   _id
-      #   imdbID
-      #   title
-      #   year
-      #   poster
-      # }
       imdbID
       suggestedBy
-      # suggestedTo {
-      #   _id
-      #   username
-      # }
     }
   }
 `;

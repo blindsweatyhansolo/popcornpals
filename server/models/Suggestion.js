@@ -7,27 +7,17 @@ const User = require('./User');
 
 const suggestionSchema = new Schema(
   {
+    // save the suggested movie's imdbID instead of title to avoid collisions
+    // in search results of movies with the same title
     imdbID: {
       type: String,
       required: true
     },
-    // movie: [
-    //   {
-    //   type: Schema.Types.ObjectId,
-    //   ref: 'Movie'
-    //   }
-    // ],
     // suggestedBy is the current logged in user's username
     suggestedBy: {
       type: String,
       required: true
     },
-    // [
-    //   {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'User'
-    //   }
-    // ],
     // suggestedTo is the logged in user's selected friend id
     suggestedTo: [
       {
@@ -37,6 +27,7 @@ const suggestionSchema = new Schema(
     ],
   }
 );
+
 
 // middleware to handle new suggestion being pushed to suggestedTo User's suggestion array
 suggestionSchema.post('save', async (newSuggestion) => {

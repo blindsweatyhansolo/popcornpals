@@ -52,11 +52,8 @@ export const REMOVE_FRIEND = gql`
 `;
 
 export const SUGGEST_MOVIE = gql`
-  mutation suggestMovie($movieId: ID!, $friendId: ID!) {
-    suggestMovie(movieId: $movieId, friendId: $friendId) {
-      movie {
-        _id
-      }
+  mutation suggestMovie($imdbID: String!, $friendId: ID!) {
+    suggestMovie(imdbID: $imdbID, friendId: $friendId) {
       suggestedBy
       suggestedTo {
         _id
