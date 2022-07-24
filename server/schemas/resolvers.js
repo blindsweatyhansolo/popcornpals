@@ -54,11 +54,8 @@ const resolvers = {
     // SUGGESTIONS - find all movies suggested to logged in user(context)
     suggestedMovies: async (parent, args, context) => {
       if (context.user) {
-        // const suggestedTo = context.user._id;
-        // // const userId = context.user._id;
 
         const suggestionData = await Suggestion.find({ suggestedTo: context.user._id })
-          // .populate('movie')
           .populate('suggestedTo');
 
         return suggestionData;
@@ -83,25 +80,23 @@ const resolvers = {
 
     // ALLRATINGS - find all ratings for specified movie via imdbID, a movie must exist in
     // the db before it can be rated
-    // allRatings: async (parent, { imdbID }, context) => {
-    //   return Rating.find({ imdbID: imdbID })
-    //     .select('-__v')
-    // },
     allRatings: async (parent, { imdbID }, context) => {
-      const rating = await Rating.findOne(
-        { imdbID: imdbID, user: context.user.username }
+      return Rating.find({ imdbID: imdbID })
+        .select('-__v')
+    },
+
+    myRating: async (parent, { imdbID }, context) => {
+      if (context.user) {
+        const rating = await Rating.findOne(
+         { imdbID: imdbID, user: context.user.username }
         );
 
-        console.log(rating._id);
-        if (rating) {
-          return rating;
-        } else {
-          return;
-        }
+        return rating;
+      }
+
+      throw new AuthenticationError('Not logged in!');
     },
-    ALLRatings: async (parent) => {
-      return Rating.find({});
-    }
+      
   },
 
   // MUTATION RESOLVERS //

@@ -95,3 +95,22 @@ export const QUERY_SINGLE_MOVIE = gql`
     }
 }
 `;
+
+export const QUERY_MY_RATING = gql`
+  query myRating($imdbID: String!) {
+    myRating(imdbID: $imdbID) {
+      rating
+      reviewBody
+    }
+}
+`;
+
+export const QUERY_ALL_RATINGS = gql`
+  query allRatings($imdbID: String!) {
+  allRatings(imdbID: $imdbID) {
+    rating
+    reviewBody
+    user
+  }
+}
+`;

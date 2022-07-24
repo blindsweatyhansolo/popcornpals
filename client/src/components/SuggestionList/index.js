@@ -37,6 +37,14 @@ const SuggestionList = (props) => {
     return suggestedMovies;
   };
 
+  if (!movies.length) {
+    return (
+      <>
+        <h3 className='text-muted'>No Suggestions Yet!</h3>
+      </>
+    )
+  }
+
   return (
     <>
       {movies.map((suggestion)=> 

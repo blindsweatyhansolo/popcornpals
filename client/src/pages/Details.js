@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import SuggestionForm from "../components/SuggestForm";
 import RateForm from "../components/RateForm";
+import RatingList from "../components/RatingList";
 import Auth from '../utils/auth';
 
 const imdbLogo = require('../assets/icons/imdb-icon.png');
@@ -44,12 +45,14 @@ const Details = () => {
           <h1>{movie.Title} ({movie.Year})</h1>
           <p>{movie.Genre}</p>
           <p>{movie.Plot}</p>
-          <div>
-            <a href={`https://www.imdb.com/title/${imdbID}/`} target="_blank" rel="noreferrer">
+            {/* <a href={`https://www.imdb.com/title/${imdbID}/`} target="_blank" rel="noreferrer">
               <img src={imdbLogo} alt='IMDb Logo'/>
               <p>{movie.imdbRating}</p>
-            </a>
-          </div>
+            </a> */}
+        </div>
+
+        <div>
+          <RatingList imdbID={imdbID} />
         </div>
         {/* FORMS ONLY RENDER WHEN LOGGED IN */}
         {loggedIn && (
@@ -61,7 +64,6 @@ const Details = () => {
             <div className="pt-2">
               <RateForm movie={movie} />
             </div>
-
           </div>
           </>
         )}

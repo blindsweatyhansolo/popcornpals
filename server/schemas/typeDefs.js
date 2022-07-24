@@ -39,6 +39,7 @@ const typeDefs = gql`
 
   # Suggestion type definition
   type Suggestion {
+    _id: ID
     # movie: [Movie]
     imdbID: String
     suggestedBy: String
@@ -57,17 +58,14 @@ const typeDefs = gql`
     me: User
     users: [User]
     user(username: String!): User
-    allMovies: [Movie]
-    # singleMovie(_id: ID!): Movie
-    singleMovie(imdbID: String!): Movie
-    # ratedMovies(userId: ID!): Rating
     ratedMovies(user: String!): Rating
     suggestedMovies: [Suggestion]
 
-    allRatings(imdbID: String!): Rating
+    myRating(imdbID: String!): Rating
+    allRatings(imdbID: String!): [Rating]
 
-    ALLRatings: [Rating]
-
+    singleMovie(imdbID: String!): Movie
+    allMovies: [Movie]
 
   } 
 
