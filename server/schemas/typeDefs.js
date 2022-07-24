@@ -33,7 +33,8 @@ const typeDefs = gql`
     imdbID: String
     rating: String
     reviewBody: String
-    user: [User]
+    user: String
+    # user: [User]
   }
 
   # Suggestion type definition
@@ -59,9 +60,15 @@ const typeDefs = gql`
     allMovies: [Movie]
     # singleMovie(_id: ID!): Movie
     singleMovie(imdbID: String!): Movie
-    ratedMovies(userId: ID!): Rating
+    # ratedMovies(userId: ID!): Rating
+    ratedMovies(user: String!): Rating
     suggestedMovies: [Suggestion]
-    # movieRatings(imdbID: String!): Rating
+
+    allRatings(imdbID: String!): Rating
+
+    ALLRatings: [Rating]
+
+
   } 
 
   # DEFINE MUTATIONS
@@ -73,14 +80,15 @@ const typeDefs = gql`
     addFriend(friendId: ID!): User
     removeFriend(friendId: ID!, userId: ID!): User
     addMovie(imdbID: String!, title: String!, year: String!, poster: String!): Movie
-    rateMovie(userRating: String!, reviewBody: String!, imdbID: String!): Rating
-    addToRated(movieId: ID!): User
+    rateMovie(rating: String!, reviewBody: String!, imdbID: String!): Rating
 
     suggestMovie(imdbID: String!, friendId: ID!): Suggestion
-
-    suggestToMyselfTest(imdbID: String!, friendId: ID!): Suggestion
-    
     removeSuggestion(suggestionId: ID!): Suggestion
+
+    # TESTING MUTATIONS
+    suggestToMyselfTest(imdbID: String!, friendId: ID!): Suggestion
+    deleteAllRatings: Rating
+    rateMovieForFriend(user: String!, userRating: String!, imdbID: String!, reviewBody: String!): Rating 
   }
 `;
 

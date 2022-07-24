@@ -4,10 +4,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import SuggestionForm from "../components/SuggestForm";
+import RateForm from "../components/RateForm";
+import Auth from '../utils/auth';
+
 const imdbLogo = require('../assets/icons/imdb-icon.png');
 
 const Details = () => {
   const { imdbID } = useParams();
+  // console.log(imdbID);
 
   // state variable for request
   const [movie, setMovie] = useState([]);
@@ -30,11 +34,13 @@ const Details = () => {
     getMovieRequest(imdbID);
   }, []);
 
+  const loggedIn = Auth.loggedIn();
+
   return (
     <>
       <div className='p-4 d-flex flex-wrap'>
-        <div className='col-6'>
-          <img src={movie.Poster} alt={`Poster for ${movie.Title}`} />
+        <div className='col-12'>
+          <img src={movie.Poster} alt={`Poster for ${movie.Title}`} className='detailsPoster' />
           <h1>{movie.Title} ({movie.Year})</h1>
           <p>{movie.Genre}</p>
           <p>{movie.Plot}</p>
@@ -45,10 +51,20 @@ const Details = () => {
             </a>
           </div>
         </div>
+        {/* FORMS ONLY RENDER WHEN LOGGED IN */}
+        {loggedIn && (
+          <>
+          <div className="col-12">
+            <div className="">
+              <SuggestionForm imdbID={imdbID}/>
+            </div>
+            <div className="pt-2">
+              <RateForm movie={movie} />
+            </div>
 
-        <div className="col-4">
-        <SuggestionForm imdbID={imdbID}/>
-        </div>
+          </div>
+          </>
+        )}
       </div>
     </>
   )

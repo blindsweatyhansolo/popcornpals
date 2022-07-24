@@ -63,13 +63,25 @@ export const SUGGEST_MOVIE = gql`
 `;
 
 export const ADD_MOVIE = gql`
-  mutation AddMovie($imdbId: String!, $title: String!, $year: String!, $poster: String!) {
-    addMovie(imdbID: $imdbId, title: $title, year: $year, poster: $poster) {
+  mutation addMovie($imdbID: String!, $title: String!, $year: String!, $poster: String!) {
+    addMovie(imdbID: $imdbID, title: $title, year: $year, poster: $poster) {
       _id
       imdbID
       title
       year
       poster
     }
+}
+`;
+
+export const RATE_MOVIE = gql`
+  mutation rateMovie($rating: String!, $imdbID: String!, $reviewBody: String!) {
+    rateMovie(rating: $rating, imdbID: $imdbID, reviewBody: $reviewBody) {
+    _id
+    imdbID
+    rating
+    reviewBody
+    user
+  }
 }
 `;

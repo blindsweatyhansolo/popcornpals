@@ -4,6 +4,7 @@
 // rating: DISLIKE | LIKE | MUST SEE
 const { Schema, model } = require('mongoose');
 const Movie = require('./Movie');
+const User = require('./User');
 
 const ratingSchema = new Schema(
   {
@@ -20,12 +21,10 @@ const ratingSchema = new Schema(
       maxlength: 280,
       required: true      
     },
-    user: [
-      {
-      type: Schema.Types.ObjectId,
-      ref: 'User'
-      }
-    ]
+    user: {
+      type: String,
+      required: true
+    }
   },
   {
     toJSON: {
@@ -36,9 +35,15 @@ const ratingSchema = new Schema(
 
 // middleware to handle new rating being pushed to rated Movie's rating array
 ratingSchema.post('save', async (newRating) => {
-  await Movie.findOneAndUpdate(
+  const movie = await Movie.findOneAndUpdate(
     { imdbID: newRating.imdbID },
     { $addToSet: { rating: newRating._id } },
+    { new: true }
+    );
+
+  const updatedUser = await User.findOneAndUpdate(
+    { username: newRating.user },
+    { $addToSet: { ratedMovies: movie._id }},
     { new: true }
     );
 });

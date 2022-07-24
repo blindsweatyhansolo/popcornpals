@@ -22,9 +22,10 @@ const movieSchema = new Schema(
       type: String,
       required: true
     },
+    // do not require poster, since some responses from OMDb are missing poster data
     poster: {
       type: String,
-      required: true
+      // required: true
     },
     // reference to ratingSchema which holds a user ID and their rating for this movie
     rating: [

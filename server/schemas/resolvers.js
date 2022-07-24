@@ -80,6 +80,28 @@ const resolvers = {
         .select('-__v')
         .populate('rating');
     },
+
+    // ALLRATINGS - find all ratings for specified movie via imdbID, a movie must exist in
+    // the db before it can be rated
+    // allRatings: async (parent, { imdbID }, context) => {
+    //   return Rating.find({ imdbID: imdbID })
+    //     .select('-__v')
+    // },
+    allRatings: async (parent, { imdbID }, context) => {
+      const rating = await Rating.findOne(
+        { imdbID: imdbID, user: context.user.username }
+        );
+
+        console.log(rating._id);
+        if (rating) {
+          return rating;
+        } else {
+          return;
+        }
+    },
+    ALLRatings: async (parent) => {
+      return Rating.find({});
+    }
   },
 
   // MUTATION RESOLVERS //
@@ -169,35 +191,40 @@ const resolvers = {
   
     // RATEMOVIE - find Movie by title, if no Movie is found create new Movie with ADDMOVIE; push
     // rating and username(context) to Movie's rating array
-    rateMovie: async (parent, { userRating, reviewBody, imdbID }, context) => {
+    rateMovie: async (parent, { rating, reviewBody, imdbID }, context) => {
       if (context.user) {
-        const userId = context.user._id;
+        // check if user has already rated this movie
+        const rated = await Rating.findOne(
+          { imdbID: imdbID, user: context.user.username }
+        );
 
-        const newRating = await Rating.create(
+        // console.log(rated);
+        // if rating exists, update rating, else create new rating
+        if (rated) {
+          const updatedRating = await Rating.findOneAndUpdate(
+            { _id: rated },
+            { 
+              rating: rating,
+              reviewBody: reviewBody
+            },
+            { new: true }
+          );
+
+          return updatedRating;
+        
+        } else if (rated === null){
+          const newRating = await Rating.create(
             { 
               imdbID: imdbID,
-              rating: userRating, 
+              rating: rating, 
               reviewBody: reviewBody,
-              user: userId
+              user: context.user.username
             }
           );
 
-        return newRating;
-      };
-
-      throw new AuthenticationError('You must be logged in!');
-    },
-
-    // ADDTORATED - adds newly added movie to ratedMovies array on User
-    addToRated: async (parent, { movieId }, context) => {
-      if (context.user) {
-        const updatedUser = await User.findOneAndUpdate(
-          { _id: context.user._id },
-          { $addToSet: { ratedMovies: movieId } },
-          { new: true, runValidators: true }
-        ).populate('ratedMovies');
-
-        return updatedUser;
+          console.log(newRating);
+          return newRating;
+        };
       };
 
       throw new AuthenticationError('You must be logged in!');
@@ -222,6 +249,23 @@ const resolvers = {
       throw new AuthenticationError('You must be logged in!');
     },
 
+    // REMOVESUGGESTION - remove movie from logged in user's suggestions list
+    removeSuggestion: async (parent, { suggestionId }, context) => {
+      if (context.user) {
+        const updatedUser = await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $pull: { suggestions: suggestionId } },
+          { new: true }
+        );
+
+        return updatedUser;
+      };
+
+      throw new AuthenticationError('You must be logged in!');
+    },
+
+
+    // TESTING MUTATIONS
     suggestToMyselfTest: async (parent, { friendId, imdbID }, context) => {
       if (context.user) {
         const newSuggestion = await Suggestion.create(
@@ -238,19 +282,20 @@ const resolvers = {
       throw new AuthenticationError('You must be logged in!');
     },
 
-    // REMOVESUGGESTION - remove movie from logged in user's suggestions list
-    removeSuggestion: async (parent, { suggestionId }, context) => {
-      if (context.user) {
-        const updatedUser = await User.findOneAndUpdate(
-          { _id: context.user._id },
-          { $pull: { suggestions: suggestionId } },
-          { new: true }
-        );
+    rateMovieForFriend: async (parent, { user, imdbID, userRating, reviewBody }) => {
+      const newFakeRating = await Rating.create(
+        {
+          imdbID: imdbID,
+          rating: userRating,
+          reviewBody: reviewBody,
+          user: user
+        }
+      );
+      return newFakeRating;
+    },
 
-        return updatedUser;
-      };
-
-      throw new AuthenticationError('You must be logged in!');
+    deleteAllRatings: async (parent) => {
+      await Rating.deleteMany({});
     },
   }
 };
