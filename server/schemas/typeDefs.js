@@ -68,6 +68,7 @@ const typeDefs = gql`
 
     singleMovie(imdbID: String!): Movie
     allMovies: [Movie]
+    singleSuggestion(imdbID: String!): Suggestion
 
   } 
 

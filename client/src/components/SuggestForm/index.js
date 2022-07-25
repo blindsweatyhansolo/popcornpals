@@ -1,5 +1,5 @@
 // COMPONENT FOR SUGGESTIONFORM ON DETAILS PAGE
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // querires and mutations
 import { QUERY_ME_BASIC, QUERY_SUGGESTIONS } from "../../utils/queries";
 import { useMutation, useQuery } from "@apollo/client";
@@ -11,7 +11,7 @@ const SuggestionForm = (props) => {
   // console.log(movie.Title);
   const { imdbID } = useParams();
 
-  const [suggestMovie, { error }] = useMutation(SUGGEST_MOVIE, {
+  const [suggestMovie] = useMutation(SUGGEST_MOVIE, {
     refetchQueries: [
       {query: QUERY_SUGGESTIONS}
     ]

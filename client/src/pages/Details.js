@@ -8,7 +8,7 @@ import RateForm from "../components/RateForm";
 import RatingList from "../components/RatingList";
 
 import Auth from '../utils/auth';
-const imdbLogo = require('../assets/icons/imdb-icon.png');
+// const imdbLogo = require('../assets/icons/imdb-icon.png');
 
 const Details = () => {
   const { imdbID } = useParams();

@@ -29,7 +29,8 @@ const resolvers = {
       return User.find()
         .select('-__v -password')
         .populate('friends')
-        .populate('ratedMovies');
+        .populate('ratedMovies')
+        .populate('suggestions');
     },
 
     // USER - find single user (via username); populate with friend and rated movie data
@@ -92,6 +93,18 @@ const resolvers = {
       }
 
       throw new AuthenticationError('Not logged in!');
+    },
+
+    singleSuggestion: async (parent, { imdbID }, context) => {
+      if (context.user) {
+        const suggestion = await Suggestion.findOne(
+          { imdbID: imdbID, suggestedTo: context.user._id}
+        );
+
+        return suggestion;
+      }
+
+      throw new AuthenticationError('You must be logged in!');
     },
       
   },
@@ -227,17 +240,31 @@ const resolvers = {
     // movie imdbID
     suggestMovie: async (parent, { imdbID, friendId, title }, context) => {
       if (context.user) {
-
-        const newSuggestion = await Suggestion.create(
-          {
-            imdbID: imdbID,
-            title: title,
-            suggestedBy: context.user.username,
-            suggestedTo: friendId
-          }
+        // check if suggestedTo user already has this title in their suggestions
+        const suggestion = await Suggestion.findOne(
+          { imdbID: imdbID, suggestedTo: friendId }
         );
+        
+        if (suggestion) {
+          const updatedSuggestion = await Suggestion.findOneAndUpdate(
+            { _id: suggestion },
+            { suggestedBy: context.user.username },
+            { new: true }
+          );
 
-        return newSuggestion;
+          return updatedSuggestion;
+        } else if (suggestion === null) {
+          const newSuggestion = await Suggestion.create(
+            {
+              imdbID: imdbID,
+              title: title,
+              suggestedBy: context.user.username,
+              suggestedTo: friendId
+            }
+          );
+
+          return newSuggestion;
+        };
       };
 
       throw new AuthenticationError('You must be logged in!');
@@ -246,13 +273,17 @@ const resolvers = {
     // REMOVESUGGESTION - remove movie from logged in user's suggestions list
     removeSuggestion: async (parent, { suggestionId }, context) => {
       if (context.user) {
+        const suggestion = await Suggestion.findOneAndDelete(
+          { _id: suggestionId }
+        );
+
         const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
           { $pull: { suggestions: suggestionId } },
           { new: true }
         );
 
-        return updatedUser;
+        return suggestion;
       };
 
       throw new AuthenticationError('You must be logged in!');
@@ -260,17 +291,33 @@ const resolvers = {
 
 
     // TESTING MUTATIONS
-    suggestToMyselfTest: async (parent, { friendId, imdbID }, context) => {
+    suggestToMyselfTest: async (parent, { friend, imdbID, title }, context) => {
       if (context.user) {
-        const newSuggestion = await Suggestion.create(
-          {
-            imdbID: imdbID,
-            suggestedBy: friendId,
-            suggestedTo: context.user._id
-          }
+        const suggestion = await Suggestion.findOne(
+          { imdbID: imdbID, suggestedTo: context.user._id }
         );
+        
+        if (suggestion) {
+          const updatedSuggestion = await Suggestion.findOneAndUpdate(
+            { _id: suggestion },
+            { suggestedBy: friend },
+            { new: true }
+          );
 
-        return newSuggestion;
+          return updatedSuggestion;
+
+        } else if (suggestion === null) {
+          const newSuggestion = await Suggestion.create(
+            {
+              imdbID: imdbID,
+              title: title,
+              suggestedBy: friend,
+              suggestedTo: context.user._id
+            }
+          );
+
+          return newSuggestion;
+        };
       };
 
       throw new AuthenticationError('You must be logged in!');

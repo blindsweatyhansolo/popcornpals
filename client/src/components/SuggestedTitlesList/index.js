@@ -6,12 +6,12 @@ import { REMOVE_SUGGESTION } from '../../utils/mutations';
 
 const SuggestedTitlesList = () => {
 
-  const [removeSuggestion] = useMutation(REMOVE_SUGGESTION);
-  // const [removeSuggestion] = useMutation(REMOVE_SUGGESTION, {
-  //   refetchQueries: [
-  //     {query: QUERY_SUGGESTIONS}
-  //   ]
-  // })
+  // const [removeSuggestion] = useMutation(REMOVE_SUGGESTION);
+  const [removeSuggestion] = useMutation(REMOVE_SUGGESTION, {
+    refetchQueries: [
+      {query: QUERY_SUGGESTIONS}
+    ]
+  });
 
   const { loading, data } = useQuery(QUERY_SUGGESTIONS);
   const movies = data?.suggestedMovies || {};
@@ -26,7 +26,6 @@ const SuggestedTitlesList = () => {
 
   const handleClick= async (event) => {
     event.preventDefault();
-    console.log(event.target.value);
 
     try {
       const suggestion = await removeSuggestion({
@@ -39,7 +38,6 @@ const SuggestedTitlesList = () => {
     } catch (e) {
       console.error(e);
     }
-
   }
 
   return (
