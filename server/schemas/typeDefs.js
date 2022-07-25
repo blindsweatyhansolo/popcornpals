@@ -53,6 +53,11 @@ const typeDefs = gql`
     user: User
   }
 
+  # Client type definition (SECRET)
+  # type Client {
+  #   secret: String
+  # }
+
   # DEFINE QUERIES
   # me | users | user | ratedMovies | suggestions
   type Query {
@@ -60,12 +65,14 @@ const typeDefs = gql`
     users: [User]
     user(username: String!): User
 
-    suggestedMovies: [Suggestion]
+    # getClient: Client
 
+    suggestedMovies: [Suggestion]
     ratedMovies(user: String!): [Rating]
     myRating(imdbID: String!): Rating
     allRatings(imdbID: String!): [Rating]
 
+    # TESTING QUERIES
     singleMovie(imdbID: String!): Movie
     allMovies: [Movie]
     singleSuggestion(imdbID: String!): Suggestion
@@ -82,7 +89,6 @@ const typeDefs = gql`
     removeFriend(friendId: ID!, userId: ID!): User
     addMovie(imdbID: String!, title: String!, year: String!, poster: String!): Movie
     rateMovie(rating: String!, reviewBody: String!, imdbID: String!, title: String!): Rating
-
     suggestMovie(imdbID: String!, title: String!, friendId: ID!): Suggestion
     removeSuggestion(suggestionId: ID!): Suggestion
 

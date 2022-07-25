@@ -1,3 +1,4 @@
+// import { useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 
 import FriendList from "../components/FriendList";
@@ -9,7 +10,6 @@ import { QUERY_ME_BASIC, QUERY_USER } from "../utils/queries";
 import { ADD_FRIEND } from "../utils/mutations";
 
 import Auth from "../utils/auth";
-import { useState } from "react";
 
 const Profile = (props) => {
   // destructure params for username of current profile
@@ -21,7 +21,8 @@ const Profile = (props) => {
       {query: QUERY_USER, variables: { username: userParam }}
     ]
   });
-  const [deleteBtnText, setDeleteBtnText] = useState('Delete Account')
+
+  // const [deleteBtnText, setDeleteBtnText] = useState('Delete Account');
 
   // data will either be for the hardcoded user, or logged in user
   const { loading, data } = useQuery(userParam ? QUERY_USER : QUERY_ME_BASIC, {
@@ -70,7 +71,7 @@ const Profile = (props) => {
         </h3>
         {userParam ? (
           <button className='btn btn-primary ml-auto' onClick={handleClick}>
-            Add Friend?
+            Add Friend
           </button>
         ) : (
           <div className='card text-dark'>
@@ -86,12 +87,10 @@ const Profile = (props) => {
             </div>
             <div className='d-flex justify-content-center pb-2'>
               <button className='btn btn-danger col-5' onClick={handleDeleteClick}>
-                {deleteBtnText}
+                Delete Account
               </button>
             </div>
-            
           </div>
-          
         )}
       </div>
       <div className='friendList'>
@@ -101,10 +100,6 @@ const Profile = (props) => {
           friends={user.friends}
         />
       </div>
-      <div className='ratedMoviesList'>
-        <h4>{ userParam ? `${user.username}'s` : 'Your'} Rated Titles</h4>
-          <RatedTitlesList user={user.username}/>
-      </div>
 
       {userParam ? ('') : (
         <div className='suggestedMoviesList'>
@@ -112,6 +107,12 @@ const Profile = (props) => {
           <SuggestedTitlesList />
         </div>
       )} 
+
+      <div className='ratedMoviesList'>
+        <h4>{ userParam ? `${user.username}'s` : 'Your'} Rated Titles</h4>
+          <RatedTitlesList user={user.username}/>
+      </div>
+
     </>
     
   )

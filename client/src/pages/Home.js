@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useLazyQuery, useQuery } from '@apollo/client';
-import { QUERY_ME_BASIC, QUERY_SUGGESTIONS } from '../utils/queries';
+import { useLazyQuery } from '@apollo/client';
+import { QUERY_SUGGESTIONS } from '../utils/queries';
 // components
 import SearchBox from '../components/SearchBox';
 import MovieListHeader from '../components/MovieListHeader';

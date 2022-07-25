@@ -31,7 +31,7 @@ const Details = () => {
   // run getMovieRequest with the passed in imdbID on load
   useEffect(() => {
     getMovieRequest(imdbID);
-  }, []);
+  });
 
   // get the logged in user's username for use in child components
   const loggedIn = Auth.loggedIn();

@@ -24,6 +24,13 @@ const resolvers = {
         throw new AuthenticationError('Not logged in!');
     },
 
+    // CLIENT - get secret from server side for client side
+    // getClient: async (parent, args) => {
+    //   const secret = process.env.API_KEY;
+
+    //   return secret;
+    // },
+
     // USERS - find all users; populate with friend and rated movie data
     users: async () => {
       return User.find()

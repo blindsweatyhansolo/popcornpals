@@ -52,6 +52,7 @@ const RateForm = (props) => {
           poster: movie.Poster
         }
       });
+      console.log(ratedMovie);
 
       const newRating = await rateMovie({
           variables: {
