@@ -1,4 +1,5 @@
 // COMPONENT FOR LIST OF RATINGS ON DETAILS PAGE
+import { Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { QUERY_ALL_RATINGS } from "../../utils/queries";
 
@@ -9,8 +10,7 @@ const RatingList = (props) => {
     variables: { imdbID }
   });
   const ratings = data?.allRatings;
-
-  console.log(ratings);
+  // console.log(ratings);
 
   if (loading) {
     return <p>'Loading...'</p>
@@ -30,17 +30,13 @@ const RatingList = (props) => {
     <>
       <section className='ratingContainer'>
       {ratings.map((rating) => (
-        <div key={rating._id} className='ratingCard card text-dark'>
+        <div className='ratingCard card text-dark' key={rating._id}>
           <div className='card-body'>
-            <div>
               <p>Rating: {rating.rating}</p>
-            </div>
-            <div>
-              <p>{rating.user}</p>
-            </div>
-            <div>
+              <Link to={`/profile/${rating.user}`}>
+                <p>{rating.user}</p>
+              </Link>
               <p>{rating.reviewBody}</p>
-            </div>
           </div>
         </div>
       ))}

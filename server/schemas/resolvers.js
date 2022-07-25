@@ -29,8 +29,7 @@ const resolvers = {
       return User.find()
         .select('-__v -password')
         .populate('friends')
-        .populate('ratedMovies')
-        .populate('suggestions');
+        .populate('ratedMovies');
     },
 
     // USER - find single user (via username); populate with friend and rated movie data
@@ -38,15 +37,13 @@ const resolvers = {
       return User.findOne({ username })
       .select('-__v -password')
       .populate('friends')
-      .populate('ratedMovies')
-      .populate('suggestions');
+      .populate('ratedMovies');
     },
 
     // RATEDMOVIES - find all rated movies for specified user; params: username
-    ratedMovies: async (parent, { userId }) => {
-      const ratedMovieData = await Rating.find({ user: userId })
-      .select('-__v')
-      .populate('user');
+    ratedMovies: async (parent, { user }) => {
+      const ratedMovieData = await Rating.find({ user: user })
+      .select('-__v');
 
       return ratedMovieData;
     },
@@ -186,7 +183,7 @@ const resolvers = {
   
     // RATEMOVIE - find Movie by title, if no Movie is found create new Movie with ADDMOVIE; push
     // rating and username(context) to Movie's rating array
-    rateMovie: async (parent, { rating, reviewBody, imdbID }, context) => {
+    rateMovie: async (parent, { rating, reviewBody, imdbID, title }, context) => {
       if (context.user) {
         // check if user has already rated this movie
         const rated = await Rating.findOne(
@@ -200,7 +197,7 @@ const resolvers = {
             { _id: rated },
             { 
               rating: rating,
-              reviewBody: reviewBody
+              reviewBody: reviewBody,
             },
             { new: true }
           );
@@ -211,13 +208,14 @@ const resolvers = {
           const newRating = await Rating.create(
             { 
               imdbID: imdbID,
+              title: title,
               rating: rating, 
               reviewBody: reviewBody,
               user: context.user.username
             }
           );
 
-          console.log(newRating);
+          // console.log(newRating);
           return newRating;
         };
       };
@@ -227,12 +225,13 @@ const resolvers = {
 
     // SUGGESTMOVIE - create new suggestion using logged in user's id, selected friend id, and
     // movie imdbID
-    suggestMovie: async (parent, { imdbID, friendId }, context) => {
+    suggestMovie: async (parent, { imdbID, friendId, title }, context) => {
       if (context.user) {
 
         const newSuggestion = await Suggestion.create(
           {
             imdbID: imdbID,
+            title: title,
             suggestedBy: context.user.username,
             suggestedTo: friendId
           }
@@ -291,6 +290,10 @@ const resolvers = {
 
     deleteAllRatings: async (parent) => {
       await Rating.deleteMany({});
+    },
+
+    deleteAllSuggestions: async (parent) => {
+      await Suggestion.deleteMany({});
     },
   }
 };

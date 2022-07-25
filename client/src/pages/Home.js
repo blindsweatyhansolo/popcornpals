@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useLazyQuery } from '@apollo/client';
-import { QUERY_SUGGESTIONS } from '../utils/queries';
+import { useLazyQuery, useQuery } from '@apollo/client';
+import { QUERY_ME_BASIC, QUERY_SUGGESTIONS } from '../utils/queries';
 // components
 import SearchBox from '../components/SearchBox';
 import MovieListHeader from '../components/MovieListHeader';
@@ -17,7 +17,6 @@ const Home = () => {
   // state variables for suggestions
   const [suggestedMovies, setSuggestedMovies] = useState([]);
   const [getSuggestions, { loading }] = useLazyQuery(QUERY_SUGGESTIONS);
-
   
   // function to handle search requests from OMDb API
   const getMovieRequest = async (searchValue) => {
@@ -36,9 +35,11 @@ const Home = () => {
     getMovieRequest(searchValue);
   }, [searchValue]);
 
-  // call fetchSuggestedMovies on load
+  // call fetchSuggestedMovies on load if loggedIn is true
   useEffect(() => {
-    fetchSuggestedMovies();
+    if (loggedIn) {
+      fetchSuggestedMovies();
+    }
   }, []);
 
   if (loading) {
@@ -48,10 +49,7 @@ const Home = () => {
   // function to handle getting suggestions from logged in user
   const fetchSuggestedMovies = async () => {
     const suggestions = await getSuggestions();
-    // console.log(suggestions.data);
-
     const suggestedData = suggestions.data.suggestedMovies;
-    // console.log(suggestedData.imdbID);
 
     if (suggestedData) {
       setSuggestedMovies(suggestedData);
@@ -64,13 +62,16 @@ const Home = () => {
 
   return (
     <div className='container-fluid movie-app'>
+      
       <div className='row d-flex align-items-center my-4'>
         <MovieListHeader heading='Find Movies' />
         <SearchBox searchValue={searchValue} setSearchValue={setSearchValue} />
       </div>
+
       <div className='row'>
         <MovieList movies={movies} />
       </div>
+
       {/* RENDER SUGGESTIONS SECTION ONLY IF LOGGED IN */}
       {loggedIn && (
         <>

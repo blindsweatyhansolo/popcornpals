@@ -6,13 +6,12 @@ import { useParams } from "react-router-dom";
 import SuggestionForm from "../components/SuggestForm";
 import RateForm from "../components/RateForm";
 import RatingList from "../components/RatingList";
-import Auth from '../utils/auth';
 
+import Auth from '../utils/auth';
 const imdbLogo = require('../assets/icons/imdb-icon.png');
 
 const Details = () => {
   const { imdbID } = useParams();
-  // console.log(imdbID);
 
   // state variable for request
   const [movie, setMovie] = useState([]);
@@ -24,18 +23,21 @@ const Details = () => {
     const response = await fetch(url);
     const responseJson = await response.json();
 
-    // console.log(responseJson);
-
     if (responseJson) {
       setMovie(responseJson);
     };
   };
-
+  
+  // run getMovieRequest with the passed in imdbID on load
   useEffect(() => {
     getMovieRequest(imdbID);
   }, []);
 
+  // get the logged in user's username for use in child components
   const loggedIn = Auth.loggedIn();
+  const userData = Auth.getProfile();
+  const username = userData.data.username;
+  // console.log(username);
 
   return (
     <>
@@ -59,10 +61,16 @@ const Details = () => {
           <>
           <div className="col-12">
             <div className="">
-              <SuggestionForm imdbID={imdbID}/>
+              <SuggestionForm 
+              movie={movie}
+              imdbID={imdbID}/>
             </div>
             <div className="pt-2">
-              <RateForm movie={movie} />
+              <RateForm 
+                movie={movie}
+                imdbID={imdbID}
+                user={username}
+               />
             </div>
           </div>
           </>

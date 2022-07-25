@@ -12,6 +12,12 @@ const ratingSchema = new Schema(
       type: String,
       required: true
     },
+
+    title: {
+      type: String,
+      required: true
+    },
+    
     rating: {
       type: String,
       required: true

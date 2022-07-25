@@ -7,9 +7,13 @@ const User = require('./User');
 
 const suggestionSchema = new Schema(
   {
-    // save the suggested movie's imdbID instead of title to avoid collisions
+    // save the suggested movie's imdbID instead of just title to avoid collisions
     // in search results of movies with the same title
     imdbID: {
+      type: String,
+      required: true
+    },
+    title: {
       type: String,
       required: true
     },

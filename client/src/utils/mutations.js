@@ -52,12 +52,20 @@ export const REMOVE_FRIEND = gql`
 `;
 
 export const SUGGEST_MOVIE = gql`
-  mutation suggestMovie($imdbID: String!, $friendId: ID!) {
-    suggestMovie(imdbID: $imdbID, friendId: $friendId) {
+  mutation suggestMovie($imdbID: String!, $friendId: ID!, $title: String!) {
+    suggestMovie(imdbID: $imdbID, friendId: $friendId, title: $title) {
       suggestedBy
       suggestedTo {
         _id
       }
+    }
+  }
+`;
+
+export const REMOVE_SUGGESTION = gql`
+  mutation removeSuggestion($suggestionId: ID!) {
+    removeSuggestion(suggestionId: $suggestionId) {
+      _id
     }
   }
 `;
@@ -75,10 +83,11 @@ export const ADD_MOVIE = gql`
 `;
 
 export const RATE_MOVIE = gql`
-  mutation rateMovie($rating: String!, $imdbID: String!, $reviewBody: String!) {
-    rateMovie(rating: $rating, imdbID: $imdbID, reviewBody: $reviewBody) {
+  mutation rateMovie($rating: String!, $imdbID: String!, $reviewBody: String!, $title: String!) {
+    rateMovie(rating: $rating, imdbID: $imdbID, reviewBody: $reviewBody, title: $title) {
     _id
     imdbID
+    title
     rating
     reviewBody
     user

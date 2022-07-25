@@ -3,8 +3,14 @@ import { gql } from '@apollo/client';
 export const QUERY_SUGGESTIONS = gql`
   query suggestedMovies {
     suggestedMovies {
+      _id
       imdbID
+      title
       suggestedBy
+      suggestedTo {
+        _id
+        username
+      }
     }
   }
 `;
@@ -14,16 +20,10 @@ export const QUERY_USER = gql`
     user(username: $username) {
       _id
       username
+      friendCount
       friends {
         _id
         username
-      }
-      ratedMovies {
-        _id
-        title
-        rating {
-          rating
-        }
       }
     }
   }
@@ -44,17 +44,11 @@ export const QUERY_ME = gql`
         _id
         title
         imdbID
-        rating {
-          rating
-        }
       }
       suggestions {
         _id
-        movie {
-          _id
-          imdbID
-          title
-        }
+        imdbID
+        suggestedBy
       }
     }
   }
@@ -66,6 +60,7 @@ export const QUERY_ME_BASIC = gql`
       _id
       username
       email
+      friendCount
       friends {
         _id
         username
@@ -101,6 +96,7 @@ export const QUERY_MY_RATING = gql`
     myRating(imdbID: $imdbID) {
       rating
       reviewBody
+      user
     }
 }
 `;
@@ -112,5 +108,18 @@ export const QUERY_ALL_RATINGS = gql`
     reviewBody
     user
   }
+}
+`;
+
+export const QUERY_RATED_MOVIES = gql`
+  query ratedMovies($user: String!) {
+    ratedMovies(user: $user) {
+      _id
+      imdbID
+      title
+      rating
+      reviewBody
+      user
+    }
 }
 `;

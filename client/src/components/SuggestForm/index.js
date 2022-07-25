@@ -1,16 +1,21 @@
 // COMPONENT FOR SUGGESTIONFORM ON DETAILS PAGE
 import { useEffect, useState } from "react";
 // querires and mutations
-import { QUERY_ME_BASIC } from "../../utils/queries";
+import { QUERY_ME_BASIC, QUERY_SUGGESTIONS } from "../../utils/queries";
 import { useMutation, useQuery } from "@apollo/client";
 import { SUGGEST_MOVIE } from "../../utils/mutations";
 import { useParams } from "react-router-dom";
 
-const SuggestionForm = () => {
+const SuggestionForm = (props) => {
+  const movie = props.movie;
+  // console.log(movie.Title);
   const { imdbID } = useParams();
-  // console.log(imdbID);
 
-  const [suggestMovie, { error }] = useMutation(SUGGEST_MOVIE);
+  const [suggestMovie, { error }] = useMutation(SUGGEST_MOVIE, {
+    refetchQueries: [
+      {query: QUERY_SUGGESTIONS}
+    ]
+  });
   const [buttonText, setButtonText] = useState("Submit");
 
   const [friendValue, setFriendValue] = useState("");
@@ -35,7 +40,8 @@ const SuggestionForm = () => {
       await suggestMovie({
         variables: {
           imdbID: imdbID,
-          friendId: friendValue.value
+          title: movie.Title,
+          friendId: friendValue.value,
         }
       });
       setButtonText("Suggestion Successful!")
