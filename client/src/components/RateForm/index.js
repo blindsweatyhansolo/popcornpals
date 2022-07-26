@@ -3,12 +3,16 @@ import { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { RATE_MOVIE, ADD_MOVIE } from '../../utils/mutations';
 import { QUERY_ALL_RATINGS, QUERY_MY_RATING, QUERY_RATED_MOVIES } from '../../utils/queries';
+import Accordion from 'react-bootstrap/Accordion';
+import Auth from '../../utils/auth';
 
 const RateForm = (props) => {
   // destructure props
   const movie = props.movie;
   const imdbID = props.imdbID;
-  const username = props.user;
+  const userData = Auth.getProfile();
+  const username = userData.data.username;
+  // const username = props.user;
   // console.log(username);
 
   // state variables for logged in users review and rating
@@ -52,7 +56,7 @@ const RateForm = (props) => {
           poster: movie.Poster
         }
       });
-      console.log(ratedMovie);
+      // console.log(ratedMovie);
 
       const newRating = await rateMovie({
           variables: {
@@ -76,63 +80,56 @@ const RateForm = (props) => {
 
   return (
     <>
-      <div className='card text-dark shadow'>
-        <div className='card-header text-center'>
-          Rate and Review: <span className='movieTitle'>
-            {movie.Title}
-            </span>
-        </div>
+      <Accordion>
+        <Accordion.Item eventKey="0">
+          <Accordion.Header>
+            Rate and Review: {movie.Title}
+          </Accordion.Header>
+          <Accordion.Body>
+          {user && (
+            <>
+            <div className='card-subtitle text-muted text-center pt-2'><em>Your Current Rating:</em> {user.rating}</div>
+            </>
+          )}
 
-        {user && (
-          <>
-          <div className='card-subtitle text-muted text-center pt-2'><em>Your Current Rating:</em> {user.rating}</div>
-          </>
-        )}
-     
-        <div className='card-body text-dark'>
           <form onSubmit={handleFormSubmit} className='row'>
-            <div className=''>
-              <div className='form-check form-check-inline'>
-                <input 
-                  type='radio' 
-                  checked={userRating === "DISLIKE"} 
-                  value='DISLIKE' 
-                  onChange={(event)=> { setUserRating(event.target.value)}}/>
-                <label>DISLIKE</label>
-              </div>
-              <div className='form-check form-check-inline'>
-                <input 
-                  type='radio' 
-                  checked={userRating === "LIKE"} 
-                  value='LIKE' 
-                  onChange={(event)=> { setUserRating(event.target.value)}}/>
-                <label>LIKE</label>
-              </div>
-              <div className='form-check form-check-inline'>
-                <input 
-                  type='radio' 
-                  checked={userRating === "MUST SEE"} 
-                  value='MUST SEE' 
-                  onChange={(event)=> { setUserRating(event.target.value)}}/>
-                <label>MUST SEE</label>
-              </div>
+            <div className='form-check form-check-inline'>
+              <input 
+                type='radio' 
+                checked={userRating === "DISLIKE"} 
+                value='DISLIKE' 
+                onChange={(event)=> { setUserRating(event.target.value)}}/>
+              <label>DISLIKE</label>
+            </div>
+            <div className='form-check form-check-inline'>
+              <input 
+                type='radio' 
+                checked={userRating === "LIKE"} 
+                value='LIKE' 
+                onChange={(event)=> { setUserRating(event.target.value)}}/>
+              <label>LIKE</label>
+            </div>
+            <div className='form-check form-check-inline'>
+              <input 
+                type='radio' 
+                checked={userRating === "MUST SEE"} 
+                value='MUST SEE' 
+                onChange={(event)=> { setUserRating(event.target.value)}}/>
+              <label>MUST SEE</label>
             </div>
             
-            <div className=''>
               <textarea
                 placeholder={user ? user.reviewBody : 'Please leave a review...'}
                 value={userReview}
                 onChange={(event) => { setUserReview(event.target.value)}}
               ></textarea>
-            </div>
-            <div className='col-12'>
-              <button className='btn btn-primary'> Rate!</button>
-            </div>
+
+              <button className='btn btn-primary col-12 my-2'> Rate!</button>
+
           </form>
-
-        </div>
-
-      </div>
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
     </>
   );
 };

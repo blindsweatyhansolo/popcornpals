@@ -12,8 +12,16 @@ const Landing = () => {
       </p>
 
       <div className=''>
-        <Link to='/home'>
-          Check it out!
+          <p>Already a Popcorn Pal?</p> 
+        <Link to='/login'>
+          Login!
+        </Link>
+      </div>
+      
+      <div>
+        <p>Not a pal yet?</p>
+        <Link to='/signup'>
+          Sign up!
         </Link>
       </div>
     </div>

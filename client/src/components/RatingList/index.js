@@ -2,6 +2,11 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { QUERY_ALL_RATINGS } from "../../utils/queries";
+import Accordion from 'react-bootstrap/Accordion';
+import ListGroup from 'react-bootstrap/ListGroup';
+const dislikeIcon = require('../../assets/icons/icon-dislike.png');
+const likeIcon = require('../../assets/icons/icon-like.png');
+const mustseeIcon = require('../../assets/icons/icon-mustsee.png');
 
 const RatingList = (props) => {
   const { imdbID } = props;
@@ -19,28 +24,52 @@ const RatingList = (props) => {
   if (!ratings.length) {
     return (
       <>
-      <div className='card text-muted'>
-        <p>No ratings yet, be the first to tell us what you think!</p>
-      </div>
+        <Accordion>
+          <Accordion.Item eventKey="0">
+            <Accordion.Header>
+              See Ratings for This Title:
+            </Accordion.Header>
+            
+            <Accordion.Body>
+              No ratings for this title yet. Tell us what you think!
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
       </>
       )
   }
   
   return (
     <>
-      <section className='ratingContainer'>
-      {ratings.map((rating) => (
-        <div className='ratingCard card text-dark' key={rating._id}>
-          <div className='card-body'>
-              <p>Rating: {rating.rating}</p>
-              <Link to={`/profile/${rating.user}`}>
-                <p>{rating.user}</p>
-              </Link>
-              <p>{rating.reviewBody}</p>
-          </div>
-        </div>
-      ))}
-      </section>
+    <Accordion>
+      <Accordion.Item eventKey="0">
+        <Accordion.Header>
+          See Ratings for This Title:
+        </Accordion.Header>
+        
+        <Accordion.Body>
+          <ListGroup variant="flush">
+          {ratings.map((rating) => (
+            <ListGroup.Item key={rating._id}>
+              <div className='text-dark'>
+                <div>
+                  <p>Rating: {rating.rating}</p>
+                </div>
+                <div>
+                  <Link to={`/profile/${rating.user}`}>
+                    <p><i className="bi bi-person-video2"></i> {rating.user}
+                    </p>
+                  </Link>
+                  <p className="col-12">{rating.reviewBody}</p>
+                </div>
+              </div>
+            </ListGroup.Item>
+          ))}
+          </ListGroup>
+        </Accordion.Body>
+      
+      </Accordion.Item>
+    </Accordion>
     </>
   )
 };

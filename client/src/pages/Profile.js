@@ -39,15 +39,6 @@ const Profile = (props) => {
     return <div>Loading . . .</div>;
   };
 
-  // if non-logged in user tries to navigate to a profile
-  if (!user?.username) {
-    return (
-      <p>
-        You must first login or sign up to access user profiles. Use the navigation links above!
-      </p>
-    )
-  };
-
   // if on someone else's profile, handle clicking 'Add Friend' button
   const handleClick = async () => {
     try {
@@ -62,6 +53,16 @@ const Profile = (props) => {
   const handleDeleteClick = async (event) => {
     event.preventDefault();
   };
+  
+  // if non-logged in user tries to navigate to a profile
+  const loggedIn = Auth.loggedIn();
+  if (!loggedIn) { 
+    return (
+      <p>
+        You must first login or sign up to access user profiles. Use the navigation links above!
+      </p>
+    )
+  }
 
   return (
     <>

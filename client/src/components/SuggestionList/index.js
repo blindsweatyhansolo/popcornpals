@@ -51,7 +51,7 @@ const SuggestionList = (props) => {
   return (
     <>
       <div className="d-flex justify-content-center">
-        <Carousel fade className="col-12 col-md-6 col-lg-2">
+        <Carousel fade className="col-12 col-md-6 col-lg-3">
           {movies.map((suggestion)=> {
 
             if (suggestion.Poster === 'N/A') {

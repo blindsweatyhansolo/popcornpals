@@ -48,7 +48,7 @@ const SuggestedTitlesList = () => {
           <div key={movie._id}>
             <div>
               <Link to={`/details/${movie.imdbID}`} >
-                <p>{movie.title} {movie._id}</p>
+                <p>{movie.title}</p>
               </Link>
             </div>
             <div key={movie.suggestedBy}>

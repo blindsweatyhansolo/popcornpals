@@ -15,6 +15,8 @@ const Header = () => {
     Auth.logout();
   }
 
+  const loggedIn = Auth.loggedIn();
+
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Navbar.Brand>
@@ -28,7 +30,7 @@ const Header = () => {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="ms-auto">
           {/*  USE AUTH TO EITHER SHOW LOGIN/SIGNUP OR PROFILE/LOGOUT */}
-          {Auth.loggedIn() ? (
+          {loggedIn ? (
             <>
               <Link to="/profile" className="px-2">Profile</Link>
               <Link to="/" onClick={logout} className="px-2">Logout</Link>

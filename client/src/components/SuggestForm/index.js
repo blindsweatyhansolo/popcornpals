@@ -5,6 +5,8 @@ import { QUERY_ME_BASIC, QUERY_SUGGESTIONS } from "../../utils/queries";
 import { useMutation, useQuery } from "@apollo/client";
 import { SUGGEST_MOVIE } from "../../utils/mutations";
 import { useParams } from "react-router-dom";
+import Accordion from 'react-bootstrap/Accordion';
+
 
 const SuggestionForm = (props) => {
   const movie = props.movie;
@@ -52,33 +54,39 @@ const SuggestionForm = (props) => {
 
 
   return (
-    <div className='card text-dark shadow'>
-      <div className='card-header text-center'>
-        Suggest this movie to your pals!
-      </div>
-      <div className='card-body'>
-        <form onSubmit={handleFormSubmit}>
-          <div className='form-group'>
-            <label htmlFor='friendSelect' className='pb-1'>Suggest to which friend?</label>
-            <select className='form-control' onChange={handleFormChange} >
-              <option value='null'>Pick a pal!</option>
-              {user.friends.map((friend) => {
-                return (
-                  <option value={friend._id} key={friend.username}>{friend.username}</option>
-                )
-                }
-              )}
-            </select>
-          </div>
+    <>
+    <Accordion>
+      <Accordion.Item eventKey="0">
+        <Accordion.Header>
+          Suggest this movie to your pals!
+        </Accordion.Header>
 
-          <div className="d-flex justify-content-center">
-            <button className='btn btn-primary mt-1 col-10'>
-              {buttonText}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <Accordion.Body>
+          <form onSubmit={handleFormSubmit}>
+            <div className='form-group'>
+              <label htmlFor='friendSelect' className='pb-1'>Suggest to which friend?</label>
+              <select className='form-control' onChange={handleFormChange} >
+                <option value='null'>Pick a pal!</option>
+                {user.friends.map((friend) => {
+                  return (
+                    <option value={friend._id} key={friend.username}>{friend.username}</option>
+                  )
+                  }
+                )}
+              </select>
+            </div>
+
+            <div className="d-flex justify-content-center">
+              <button className='btn btn-primary mt-1 col-10'>
+                {buttonText}
+              </button>
+            </div>
+          </form>
+        </Accordion.Body>
+      </Accordion.Item>
+
+    </Accordion>
+    </>
   );
 };
 
