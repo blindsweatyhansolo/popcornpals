@@ -1,5 +1,12 @@
 import { Link } from 'react-router-dom';
+
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+// import NavDropdown from 'react-bootstrap/NavDropdown';
 import Auth from '../../utils/auth';
+
+const popcorn = require('../../assets/icons/popcornlogo.png');
+
 
 const Header = () => {
   // handle logout with Auth
@@ -9,46 +16,32 @@ const Header = () => {
   }
 
   return (
-    <nav className='navbar navbar-expand-lg bg-light'>
-      <div className='container-fluid'>
-        <Link to= '/home'>
-            <h1 className='navbar-brand'>🍿Popcorn Pals🍿</h1>
+    <Navbar bg="dark" variant="dark" expand="lg">
+      <Navbar.Brand>
+        <Link to='/home' className="px-2" id="brand">
+          <img src={popcorn} alt="popcornLogo" />
+          Popcorn Pals
         </Link>
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
+      </Navbar.Brand>
 
-        <div className='collapse navbar-collapse' id='navbarSupportedContent'>
-          <ul className='navbar-nav'>
-            
-            {Auth.loggedIn() ? (
-              <>
-              <li className='nav-item'>
-                <Link to='/profile' className='nav-link'>Profile</Link>
-              </li>
-              <li className='nav-item'>
-                <a href='/' onClick={logout} className='nav-link'>Logout</a>
-              </li>
-              </>
-            ) : (
-              <>
-              <li className='nav-item'>
-                {/* USE AUTH TO EITHER SHOW LOGIN/SIGNUP OR ACCOUNT/LOGOUT */}
-                <Link to='/login' className='nav-link'>
-                  Login
-                </Link>
-              </li>
-              <li className='nav-item'>
-                <Link to='/signup' className='nav-link'>
-                  Sign Up
-                </Link>
-              </li>
-              </>
-            )}
-          </ul>
-        </div>
-      </div>
-    </nav>
+      <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="ms-auto">
+          {/*  USE AUTH TO EITHER SHOW LOGIN/SIGNUP OR PROFILE/LOGOUT */}
+          {Auth.loggedIn() ? (
+            <>
+              <Link to="/profile" className="px-2">Profile</Link>
+              <Link to="/" onClick={logout} className="px-2">Logout</Link>
+            </>
+          ) : (
+            <>
+              <Link to='/login' className="px-2">Login</Link>
+              <Link to='/signup' className="px-2">Sign Up</Link>
+            </>
+          )}
+        </Nav>
+      </Navbar.Collapse>
+    </Navbar>
   );
 };
 

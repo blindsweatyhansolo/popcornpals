@@ -8,13 +8,16 @@ import RateForm from "../components/RateForm";
 import RatingList from "../components/RatingList";
 
 import Auth from '../utils/auth';
+const noPoster = require('../assets/images/noposter.png');
 // const imdbLogo = require('../assets/icons/imdb-icon.png');
+
 
 const Details = () => {
   const { imdbID } = useParams();
 
   // state variable for request
   const [movie, setMovie] = useState([]);
+  const [poster, setPoster] = useState([]);
 
   // function to hanlde search requests from OMDb API based on imdbID
   const getMovieRequest = async (imdbID) => {
@@ -26,6 +29,12 @@ const Details = () => {
     if (responseJson) {
       setMovie(responseJson);
     };
+
+    if (responseJson.Poster === 'N/A') {
+      setPoster(noPoster);
+    } else {
+      setPoster(responseJson.Poster)
+    }
   };
   
   // run getMovieRequest with the passed in imdbID on load
@@ -37,20 +46,22 @@ const Details = () => {
   const loggedIn = Auth.loggedIn();
   const userData = Auth.getProfile();
   const username = userData.data.username;
-  // console.log(username);
 
   return (
     <>
+      {/* <div className="row">
+        <div className="col-lg-6 col-12">
+        </div>
+      </div> */}
+
       <div className='p-4 d-flex flex-wrap'>
         <div className='col-12'>
-          <img src={movie.Poster} alt={`Poster for ${movie.Title}`} className='detailsPoster' />
+          <a href={`https://www.imdb.com/title/${movie.imdbID}/`} target="_blank" rel="noreferrer">
+            <img src={poster} alt={`Poster for ${movie.Title}`} className='detailsPoster' />
+          </a>
           <h1>{movie.Title} ({movie.Year})</h1>
           <p>{movie.Genre}</p>
           <p>{movie.Plot}</p>
-            {/* <a href={`https://www.imdb.com/title/${imdbID}/`} target="_blank" rel="noreferrer">
-              <img src={imdbLogo} alt='IMDb Logo'/>
-              <p>{movie.imdbRating}</p>
-            </a> */}
         </div>
 
         <div>

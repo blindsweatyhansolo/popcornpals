@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Carousel from 'react-bootstrap/Carousel';
+const noPoster = require('../../assets/images/noposter.png');
 
 const SuggestionList = (props) => {
   const [movies, setMovies] = useState([]);
@@ -45,15 +47,37 @@ const SuggestionList = (props) => {
     )
   }
 
+
   return (
     <>
-      {movies.map((suggestion)=> 
-          <Link to={`/details/${suggestion.imdbID}`} key={suggestion.Title}>
-            <div>
-              <img src={suggestion.Poster} alt=''/>
-            </div>
-          </Link>
-      )}
+      <div className="d-flex justify-content-center">
+        <Carousel fade className="col-12 col-md-6 col-lg-2">
+          {movies.map((suggestion)=> {
+
+            if (suggestion.Poster === 'N/A') {
+              return (
+                <Carousel.Item key={suggestion.Title}>
+                  <Link to={`/details/${suggestion.imdbID}`} >
+                    <Carousel.Caption>
+                      <h3>{suggestion.Title}</h3>
+                    </Carousel.Caption>
+                    <img src={noPoster} alt='poster' className="d-block w-100"/>
+                  </Link>
+                </Carousel.Item>
+              )
+
+            } else {
+              return (
+                <Carousel.Item key={suggestion.Title}>
+                  <Link to={`/details/${suggestion.imdbID}`} >
+                    <img src={suggestion.Poster} alt='poster' className="d-block w-100"/>
+                  </Link>
+                </Carousel.Item>
+              )
+            };
+          })}
+        </Carousel>
+      </div>
     </>
   );
 };
