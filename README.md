@@ -26,7 +26,7 @@ To work with this project's code base, ensure that you have Node.js and MongoDB 
 
 1. Clone this repository onto your machine with `git clone`
 2. Install dependencies from each directory (*root / server / client*) with `npm install`
-3. Initialize server connection, from the *server* directory run `npm start` or `npm run watch` to use nodemon.
+3. Initialize server connection, from the *server* directory run `npm start` or `npm run watch` to use nodemon. This project also uses the **concurrently** npm package. From the *root* directory you can achieve the same result with `npm run develop`
 4. Visit `localhost:3001/graphql` to connect to Apollo Studio to test queries and mutations
 5. Initialize the React development environment from the *client* directory run `npm start`. If not automatically redirected after compiling, navigate to `localhost:3000` in your browser.
 
