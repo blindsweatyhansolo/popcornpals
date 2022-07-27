@@ -18,7 +18,7 @@ import NoMatch from './pages/NoMatch';
 
 // create connection to backend server
 const httpLink = createHttpLink({
-  uri: 'http://localhost:3001/graphql'
+  uri: '/graphql'
 });
 
 // retreive token from local storage, set the HTTP req headers of every

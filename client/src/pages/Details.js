@@ -43,7 +43,7 @@ const Details = () => {
   // get the logged in user's username for use in child components
   const loggedIn = Auth.loggedIn();
 
-  console.log(movie);
+  // console.log(movie);
 
   return (
     <>
