@@ -6,7 +6,7 @@ import './index.css';
 
 // components
 import Header from './components/Header';
-// import Footer from './components/Footer';
+import Footer from './components/Footer';
 // pages
 import Landing from './pages/Landing';
 import Home from './pages/Home';
@@ -63,7 +63,7 @@ function App() {
               <Route path='*' element={<NoMatch />} />
             </Routes>
           </div>
-          {/* <Footer /> */}
+          <Footer />
         </div>
       </Router>
     </ApolloProvider>
