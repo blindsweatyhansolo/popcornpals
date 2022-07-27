@@ -19,7 +19,7 @@ const Details = () => {
 
   // function to hanlde search requests from OMDb API based on imdbID
   const getMovieRequest = async (imdbID) => {
-    const url = `http://www.omdbapi.com/?i=${imdbID}&apikey=b389d5bc`;
+    const url = `https://www.omdbapi.com/?i=${imdbID}&apikey=b389d5bc`;
 
     const response = await fetch(url);
     const responseJson = await response.json();
