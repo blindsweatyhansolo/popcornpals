@@ -4,9 +4,9 @@ import { useQuery } from "@apollo/client";
 import { QUERY_ALL_RATINGS } from "../../utils/queries";
 import Accordion from 'react-bootstrap/Accordion';
 import ListGroup from 'react-bootstrap/ListGroup';
-const dislikeIcon = require('../../assets/icons/icon-dislike.png');
-const likeIcon = require('../../assets/icons/icon-like.png');
-const mustseeIcon = require('../../assets/icons/icon-mustsee.png');
+// const dislikeIcon = require('../../assets/icons/icon-dislike.png');
+// const likeIcon = require('../../assets/icons/icon-like.png');
+// const mustseeIcon = require('../../assets/icons/icon-mustsee.png');
 
 const RatingList = (props) => {
   const { imdbID } = props;
@@ -27,7 +27,7 @@ const RatingList = (props) => {
         <Accordion>
           <Accordion.Item eventKey="0">
             <Accordion.Header>
-              See Ratings for This Title:
+              See Pal Ratings for This Title:
             </Accordion.Header>
             
             <Accordion.Body>
@@ -44,7 +44,7 @@ const RatingList = (props) => {
     <Accordion>
       <Accordion.Item eventKey="0">
         <Accordion.Header>
-          See Ratings for This Title:
+          See Pal Ratings for This Title:
         </Accordion.Header>
         
         <Accordion.Body>
@@ -53,12 +53,9 @@ const RatingList = (props) => {
             <ListGroup.Item key={rating._id}>
               <div className='text-dark'>
                 <div>
-                  <p>Rating: {rating.rating}</p>
-                </div>
-                <div>
                   <Link to={`/profile/${rating.user}`}>
-                    <p><i className="bi bi-person-video2"></i> {rating.user}
-                    </p>
+                    <p><i className="bi bi-person-video2"></i> {rating.user}</p>
+                    <p>Rating: {rating.rating}</p>
                   </Link>
                   <p className="col-12">{rating.reviewBody}</p>
                 </div>

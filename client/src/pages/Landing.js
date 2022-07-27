@@ -1,27 +1,24 @@
 import { Link } from 'react-router-dom';
+const searchIcon = require('../assets/icons/searchmovie.png');
+const rateIcon = require('../assets/icons/ratereview.png');
+const shareIcon = require('../assets/icons/suggest.png');
 
 const Landing = () => {
   return (
-    <div className='d-flex flex-column align-items-center text-center'>
+    <div className='d-flex flex-column align-items-center text-center mt-4'>
+
       <h1>
         Welcome to Popcorn Pals!
       </h1>
 
-      <p>
-        Share movies with your friends!
-      </p>
+      <img src={searchIcon} alt='' className='py-2'/> Search for Titles
+      <img src={rateIcon} alt='' className='py-2'/> Rate and Review
+      <img src={shareIcon} alt='' className='py-2'/> Suggest Them to your Pals!
 
-      <div className=''>
-          <p>Already a Popcorn Pal?</p> 
-        <Link to='/login'>
-          Login!
-        </Link>
-      </div>
-      
-      <div>
-        <p>Not a pal yet?</p>
-        <Link to='/signup'>
-          Sign up!
+
+      <div className='mt-4'>
+        <Link to='/home'>
+          <h3>Check it Out!</h3>
         </Link>
       </div>
     </div>

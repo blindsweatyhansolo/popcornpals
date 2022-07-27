@@ -16,6 +16,10 @@ a {
   color: inherit;
 }
 
-/* a:hover { 
-  color: yellow;
-} */
+a:hover { 
+  color: #FAC213;
+}
+
+#notFound {
+  max-width: 100%;
+}

@@ -24,6 +24,14 @@ export const ADD_USER = gql`
   }
 `;
 
+export const REMOVE_USER = gql`
+  mutation removeUser {
+    removeUser {
+      _id
+    }
+  }
+`;
+
 export const ADD_FRIEND = gql`
   mutation addFriend($id: ID!) {
     addFriend(friendId: $id) {

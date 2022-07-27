@@ -46,7 +46,7 @@ function App() {
       <Router>
         <div className=''>
           <Header />
-          <div className=''>
+          <div className='px-4'>
             <Routes>
               <Route path='/' element={<Landing />} />
               <Route path='/home' element={<Home />} />

@@ -18,7 +18,7 @@ const Header = () => {
   const loggedIn = Auth.loggedIn();
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar bg="dark" variant="dark" expand="md" className="px-2" >
       <Navbar.Brand>
         <Link to='/home' className="px-2" id="brand">
           <img src={popcorn} alt="popcornLogo" />

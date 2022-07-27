@@ -53,30 +53,21 @@ const typeDefs = gql`
     user: User
   }
 
-  # Client type definition (SECRET)
-  # type Client {
-  #   secret: String
-  # }
-
   # DEFINE QUERIES
   # me | users | user | ratedMovies | suggestions
   type Query {
     me: User
-    users: [User]
     user(username: String!): User
-
-    # getClient: Client
-
     suggestedMovies: [Suggestion]
     ratedMovies(user: String!): [Rating]
     myRating(imdbID: String!): Rating
     allRatings(imdbID: String!): [Rating]
 
     # TESTING QUERIES
+    users: [User]
     singleMovie(imdbID: String!): Movie
     allMovies: [Movie]
     singleSuggestion(imdbID: String!): Suggestion
-
   } 
 
   # DEFINE MUTATIONS
@@ -84,7 +75,7 @@ const typeDefs = gql`
   type Mutation {
     addUser(username: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
-    removeUser(_id: ID!): User
+    removeUser: User
     addFriend(friendId: ID!): User
     removeFriend(friendId: ID!, userId: ID!): User
     addMovie(imdbID: String!, title: String!, year: String!, poster: String!): Movie
@@ -95,7 +86,7 @@ const typeDefs = gql`
     # TESTING MUTATIONS
     suggestToMyselfTest(imdbID: String!, title: String!, friend: String!): Suggestion
     deleteAllSuggestions: Suggestion
-    rateMovieForFriend(user: String!, userRating: String!, imdbID: String!, reviewBody: String!): Rating 
+    rateMovieForFriend(title: String!, user: String!, userRating: String!, imdbID: String!, reviewBody: String!): Rating 
     deleteAllRatings: Rating
   }
 `;

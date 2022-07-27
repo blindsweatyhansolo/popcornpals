@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_SUGGESTIONS } from '../../utils/queries';
 import { REMOVE_SUGGESTION } from '../../utils/mutations';
-
+import ListGroup from 'react-bootstrap/ListGroup';
 
 const SuggestedTitlesList = () => {
 
@@ -40,32 +40,31 @@ const SuggestedTitlesList = () => {
     }
   }
 
-  return (
+  return (  
     <>
-      <div className='list-group'>
-
+      <ListGroup>
         {movies.map(movie => (
-          <div key={movie._id}>
-            <div>
+          <ListGroup.Item 
+            key={movie._id} 
+            className="d-flex justify-content-between align-items-start"
+          >
+            <div className="ms-2 me-auto">
               <Link to={`/details/${movie.imdbID}`} >
-                <p>{movie.title}</p>
+                <div className="fw-bold"><i className="bi bi-film"></i> {movie.title}</div>
               </Link>
-            </div>
-            <div key={movie.suggestedBy}>
-              <p> From: 
-              <Link to={`/profile/${movie.suggestedBy}`} >
-                {movie.suggestedBy}
-              </Link>
-              </p>
+                <Link to={`/profile/${movie.suggestedBy}`} >
+                <i className='bi bi-person-video2'></i> {movie.suggestedBy}
+                </Link>
             </div>
             <button 
               className='btn btn-danger'
-              value={movie._id} 
-              onClick={handleClick}>X</button>
-
-          </div>
+              value={movie._id}
+              onClick={handleClick}>
+              <i className="bi bi-trash3"></i> Remove
+            </button>
+          </ListGroup.Item>
         ))}
-      </div>
+      </ListGroup>
     </>
   )
 

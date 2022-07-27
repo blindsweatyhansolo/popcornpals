@@ -35,14 +35,14 @@ const Signup = () => {
   };
 
   return (
-    <div className='container col-12 col-md-10 col-lg-8'>
-      <div className='text-center'>
-        <p>Welcome, pal!</p>
+    <div className='d-flex justify-content-center'>
+      <div className='text-center mt-4 col-12 col-md-10 col-lg-6'>
+        <h4>Welcome, pal!</h4>
 
         <form onSubmit={handleFormSubmit}>
           <div className='form-group'>
             <input
-              className='form-input form-control'
+              className='form-input form-control my-2'
               placeholder='Your username'
               name='username'
               type='username'
@@ -51,7 +51,7 @@ const Signup = () => {
               onChange={handleChange}
             />
             <input 
-             className='form-input form-control'
+             className='form-input form-control my-2'
              placeholder='Your email'
              name='email'
              type='email'
@@ -60,11 +60,12 @@ const Signup = () => {
              onChange={handleChange}
             />
             <input 
-              className='form-input form-control'
+              className='form-input form-control my-2'
               placeholder='Your password'
               name='password'
               type='password'
               id='password'
+              autoComplete="on"
               value={formState.password}
               onChange={handleChange}
             />

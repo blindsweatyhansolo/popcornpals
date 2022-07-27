@@ -9,8 +9,6 @@ import RatingList from "../components/RatingList";
 
 import Auth from '../utils/auth';
 const noPoster = require('../assets/images/noposter.png');
-// const imdbLogo = require('../assets/icons/imdb-icon.png');
-
 
 const Details = () => {
   const { imdbID } = useParams();
@@ -40,46 +38,55 @@ const Details = () => {
   // run getMovieRequest with the passed in imdbID on load
   useEffect(() => {
     getMovieRequest(imdbID);
-  });
+  }, []);
 
   // get the logged in user's username for use in child components
   const loggedIn = Auth.loggedIn();
-  // const userData = Auth.getProfile();
-  // const username = userData.data.username;
+
+  console.log(movie);
 
   return (
     <>
-      <div className='p-4 d-flex flex-wrap'>
-        <div className='col-12'>
-          <a href={`https://www.imdb.com/title/${movie.imdbID}/`} target="_blank" rel="noreferrer">
-            <img src={poster} alt={`Poster for ${movie.Title}`} className='detailsPoster' />
-          </a>
-          <h1>{movie.Title} ({movie.Year})</h1>
-          <p>{movie.Genre}</p>
-          <p>{movie.Plot}</p>
+      <div className='p-4'>
+        <div className='d-flex flex-wrap justify-content-center pb-2'>
+
+        
+          <div>
+            <a href={`https://www.imdb.com/title/${movie.imdbID}/`} target="_blank" rel="noreferrer">
+              <img src={poster} alt={`Poster for ${movie.Title}`} className='pb-2' />
+            </a>
+          </div>
+          <div className="col-12 col-md-6 col-lg-4 px-4">
+            <h1>{movie.Title} ({movie.Year})</h1>
+            <p>{movie.Genre}</p>
+            <p>{movie.Plot}</p>
+          </div>
+          
         </div>
 
-        <div className="col-12 col-md-6 col-lg-4 py-2">
+      <div className="d-flex flex-wrap justify-content-center">
+        <div className="col-12 col-md-8 col-lg-8 py-2">
           <RatingList imdbID={imdbID} />
         </div>
         {/* FORMS ONLY RENDER WHEN LOGGED IN */}
         {loggedIn && (
           <>
-            <div className="col-12 col-md-6 col-lg-4 py-2">
-              <RateForm 
-                movie={movie}
-                imdbID={imdbID}
-                // user={username}
-               />
-            </div>
-
-            <div className="col-12 col-md-6 col-lg-4 py-2">
+            <div className="col-12 col-md-6 col-lg-6 py-2 px-2">
               <SuggestionForm 
               movie={movie}
               imdbID={imdbID}/>
             </div>
+            
+            <div className="col-12 col-md-6 col-lg-6 py-2 px-2">
+              <RateForm 
+                movie={movie}
+                imdbID={imdbID}
+               />
+            </div>
+
           </>
         )}
+        </div>
       </div>
     </>
   )

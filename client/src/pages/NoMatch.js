@@ -1,8 +1,10 @@
 // NOMATCH PAGE USED TO HANLDE WILDCARD ROUTES
+const notfound = require('../assets/images/404.png');
+
 const NoMatch = () => {
   return (
-    <div>
-      404: PAGE NOT FOUND!
+    <div className="col-12 mt-4">
+      <img src={notfound} alt="404 NOT FOUND" id="notFound"/>
     </div>
   );
 };

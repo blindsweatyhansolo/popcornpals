@@ -1,4 +1,3 @@
-
 // when a movie is SUGGESTED to another user, the data in the suggestedSchema
 // array is updated with the logged in user's username and the movie's title to
 // be read by the user it is SUGGESTED TO

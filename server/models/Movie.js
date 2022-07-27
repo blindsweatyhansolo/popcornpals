@@ -1,14 +1,13 @@
 // Movie document to hold title pulled from front OMDb query variable, and reference to
-// Rating schema (subdocument). After a user searchers for a movie title on the front end
-// AND/OR rates / suggests to another friend, the title gets scraped from the query and
-// used to create a new Movie document. This ensures only Movies that have been rated or
-// suggested are added to the DB, instead of a massive collection
+// Rating schema. After a user searchers for a movie title on the front end
+// AND rates to it, the title gets scraped from the query and
+// used to create a new Movie document. This ensures only Movies that have been rated
+// are added to the DB, instead of a massive collection
 const { Schema, model } = require('mongoose');
 
 // define Movie schema
 const movieSchema = new Schema(
   {
-    // omdb ID instead of TITLE
     imdbID: {
       type: String,
       required: true,

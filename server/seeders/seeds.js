@@ -3,12 +3,14 @@
 const faker = require('faker');
 
 const db = require('../config/connection');
-const { User, Movie } = require('../models');
+const { User, Movie, Rating, Suggestion } = require('../models');
 
 db.once('open', async () => {
   // delete any existing data
   await User.deleteMany({});
   await Movie.deleteMany({});
+  await Rating.deleteMany({});
+  await Suggestion.deleteMany({});
 
   // create empty user data array
   const userData = [];
@@ -27,7 +29,7 @@ db.once('open', async () => {
   const createdUsers = await User.collection.insertMany(userData);
 
   // create friends
-  for (let i = 0; i < 20; i += 1) {
+  for (let i = 0; i < 5; i += 1) {
     const randomUserIndex = Math.floor(Math.random() * createdUsers.ops.length);
     const { _id: userId } = createdUsers.ops[randomUserIndex];
 
@@ -40,19 +42,6 @@ db.once('open', async () => {
 
     await User.updateOne({ _id: userId }, { $addToSet: { friends: friendId } });
   }
-
-  // // create movies
-  // const movieData = [];
-
-  // // loop for creating 5 movies
-  // for (let i = 0; i < 5; i += 1){
-  //   const imdbID = faker.internet.password(8);
-  //   const title = faker.lorem.words(3);
-
-  //   const createdMovie = await Movie.create({ imdbID, title });
-
-  //   movieData.push(createdMovie);
-  // }
 
   console.log('FAKE DATA CREATED');
   process.exit(0);
