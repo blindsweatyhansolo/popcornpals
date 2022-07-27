@@ -20,7 +20,7 @@ const Home = () => {
   
   // function to handle search requests from OMDb API
   const getMovieRequest = async (searchValue) => {
-    const url = `http://www.omdbapi.com/?s=${searchValue}&apikey=b389d5bc`;
+    const url = `https://www.omdbapi.com/?s=${searchValue}&apikey=b389d5bc`;
 
     const response = await fetch(url);
     const responseJson = await response.json();
