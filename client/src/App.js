@@ -6,7 +6,6 @@ import './index.css';
 
 // components
 import Header from './components/Header';
-import Footer from './components/Footer';
 // pages
 import Landing from './pages/Landing';
 import Home from './pages/Home';
@@ -44,9 +43,9 @@ function App() {
   return (
     <ApolloProvider client={client} >
       <Router>
-        <div className=''>
+        {/* <div className=''> */}
           <Header />
-          <div className='px-4'>
+          <main className='px-4 pb-4'>
             <Routes>
               <Route path='/' element={<Landing />} />
               <Route path='/home' element={<Home />} />
@@ -62,9 +61,8 @@ function App() {
               <Route path='/details/:imdbID' element={<Details />} />
               <Route path='*' element={<NoMatch />} />
             </Routes>
-          </div>
-          <Footer />
-        </div>
+          </main>
+        {/* </div> */}
       </Router>
     </ApolloProvider>
   );

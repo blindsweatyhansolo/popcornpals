@@ -6,6 +6,8 @@ import { useMutation, useQuery } from "@apollo/client";
 import { SUGGEST_MOVIE } from "../../utils/mutations";
 import { useParams } from "react-router-dom";
 import Accordion from 'react-bootstrap/Accordion';
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 
 
 const SuggestionForm = (props) => {
@@ -13,12 +15,16 @@ const SuggestionForm = (props) => {
   // console.log(movie.Title);
   const { imdbID } = useParams();
 
+   // state variables for modal
+   const [show, setShow] = useState(false);
+   const handleClose = () => setShow(false);
+   const handleShow = () => setShow(true);
+
   const [suggestMovie] = useMutation(SUGGEST_MOVIE, {
     refetchQueries: [
       {query: QUERY_SUGGESTIONS}
     ]
   });
-  const [buttonText, setButtonText] = useState("Submit");
 
   const [friendValue, setFriendValue] = useState("");
 
@@ -31,7 +37,6 @@ const SuggestionForm = (props) => {
   // change friend value to selected friend, reset button text
   const handleFormChange = (event) => {
     setFriendValue({ value: event.target.value });
-    setButtonText("Submit");
   };
   
   // handle suggestion mutation with selected friend
@@ -46,7 +51,8 @@ const SuggestionForm = (props) => {
           friendId: friendValue.value,
         }
       });
-      setButtonText("Suggestion Successful!")
+      
+      handleShow();
     } catch (e) {
       console.error(e);
     }
@@ -76,9 +82,11 @@ const SuggestionForm = (props) => {
               </select>
             </div>
 
+            
+
             <div className="d-flex justify-content-center">
               <button className='btn btn-primary mt-1 col-10'>
-                {buttonText}
+                Suggest Title
               </button>
             </div>
           </form>
@@ -86,6 +94,22 @@ const SuggestionForm = (props) => {
       </Accordion.Item>
 
     </Accordion>
+    
+    <Modal centered show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title className="text-dark">Movie Suggested</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <p className='text-dark'>
+          Awesome, suggestion sent! Select another friend to make a new suggestion.
+        </p>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Close
+        </Button>
+      </Modal.Footer>
+    </Modal>
     </>
   );
 };
