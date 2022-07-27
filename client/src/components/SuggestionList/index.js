@@ -23,7 +23,7 @@ const SuggestionList = (props) => {
       searchValue.map(async (value) => {
         const imdbID = value;
 
-        const url = `http://www.omdbapi.com/?i=${imdbID}&apikey=b389d5bc`;
+        const url = `https://www.omdbapi.com/?i=${imdbID}&apikey=b389d5bc`;
 
         const suggestionResponse = await fetch(url);
         const suggestionResponseJson = await suggestionResponse.json();

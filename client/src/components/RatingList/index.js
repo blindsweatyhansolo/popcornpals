@@ -55,8 +55,8 @@ const RatingList = (props) => {
                 <div>
                   <Link to={`/profile/${rating.user}`}>
                     <p><i className="bi bi-person-video2"></i> {rating.user}</p>
-                    <p>Rating: {rating.rating}</p>
                   </Link>
+                    <p>Rating: {rating.rating}</p>
                   <p className="col-12">{rating.reviewBody}</p>
                 </div>
               </div>
