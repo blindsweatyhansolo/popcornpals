@@ -2,14 +2,17 @@
 import { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { RATE_MOVIE, ADD_MOVIE } from '../../utils/mutations';
-import { QUERY_ALL_RATINGS, QUERY_MY_RATING, QUERY_RATED_MOVIES } from '../../utils/queries';
+import { QUERY_ALL_RATINGS, 
+          QUERY_MY_RATING, 
+          QUERY_RATED_MOVIES, 
+          QUERY_USER, 
+          QUERY_ME_BASIC } from '../../utils/queries';
+          
 import Accordion from 'react-bootstrap/Accordion';
-
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import Modal from 'react-bootstrap/Modal';
-
 
 import Auth from '../../utils/auth';
 
@@ -44,6 +47,8 @@ const RateForm = (props) => {
   // with the newly created rating data, and a user's profile rated list is updated
   const [rateMovie] = useMutation(RATE_MOVIE, {
     refetchQueries: [
+      {query: QUERY_ME_BASIC},
+      {query: QUERY_USER, variables: { username: username }},
       {query: QUERY_ALL_RATINGS, variables: { imdbID: imdbID }},
       {query: QUERY_MY_RATING, variables: { imdbID: imdbID }},
       {query: QUERY_RATED_MOVIES, variables: { user: username }},

@@ -9,6 +9,7 @@ import RatingList from "../components/RatingList";
 import Button from 'react-bootstrap/Button';
 
 import Auth from '../utils/auth';
+import BackButton from "../components/BackButton";
 const noPoster = require('../assets/images/noposter.png');
 
 const Details = () => {
@@ -51,9 +52,7 @@ const Details = () => {
   return (
     <>
       <div className='p-4'>
-        <Button onClick={() => navigate(-1)} className='mb-4'>
-          <i className='bi bi-arrow-left'></i> Back
-        </Button>
+        <BackButton />
 
         <div className='d-flex flex-wrap justify-content-center pb-2'>
 

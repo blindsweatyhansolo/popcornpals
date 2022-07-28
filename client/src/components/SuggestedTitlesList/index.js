@@ -59,8 +59,9 @@ const SuggestedTitlesList = () => {
             <button 
               className='btn btn-danger'
               value={movie._id}
-              onClick={handleClick}>
-              <i className="bi bi-trash3"></i> Remove
+              onClick={handleClick}
+            >
+              Remove
             </button>
           </ListGroup.Item>
         ))}

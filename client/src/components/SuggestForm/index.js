@@ -22,7 +22,8 @@ const SuggestionForm = (props) => {
 
   const [suggestMovie] = useMutation(SUGGEST_MOVIE, {
     refetchQueries: [
-      {query: QUERY_SUGGESTIONS}
+      {query: QUERY_SUGGESTIONS},
+      {query: QUERY_ME_BASIC},
     ]
   });
 

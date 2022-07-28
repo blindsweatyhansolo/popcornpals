@@ -4,6 +4,7 @@ import { Navigate, useParams } from "react-router-dom";
 import FriendList from "../components/FriendList";
 import RatedTitlesList from "../components/RatedTitlesList";
 import SuggestedTitlesList from "../components/SuggestedTitlesList";
+import BackButton from "../components/BackButton";
 import Accordion from "react-bootstrap/Accordion";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -82,6 +83,9 @@ const Profile = (props) => {
 
   return (
     <>
+      <div className="p-4">
+        <BackButton />
+      
       <div className='d-flex justify-content-center'>
         <h3 className="m-2">
           Viewing { userParam ? `${user.username}'s` : 'your'} profile. { userParam ? '' : `Hi ${user.username}!`}
@@ -113,21 +117,21 @@ const Profile = (props) => {
         </Modal>
         </>
       ) : (
-        <div className='d-flex justify-content-center'>
+        <div className='d-flex justify-content-center pt-2'>
           <div className="col-12 col-md-6 col-lg-4">
             <Accordion>
-              <Accordion.Header>
-                Account Details And Options
-              </Accordion.Header>
-              <Accordion.Body>
-                  <div className='card text-dark'>
-                    <div className='card-body'>
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>
+                  Account Details And Options
+                </Accordion.Header>
+                <Accordion.Body>
+                    <div className='text-dark'>
                       <p>Username: {user.username}</p>
                       <p>E-mail: {user.email}</p>
                       <p>Friends: {user.friendCount}</p>
-                    </div>
-                </div>
-              </Accordion.Body>
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
             </Accordion>
           </div>
         </div>
@@ -145,19 +149,19 @@ const Profile = (props) => {
       <div className="d-flex justify-content-center flex-wrap">
       
         {userParam ? ('') : (
-          <div className='py-3 px-1 col-12 col-md-6 col-lg-5'>
+          <div className='py-3 px-2  mx-4 col-12 col-md-6 col-lg-5'>
             <h4>Suggested By Your Pals</h4>
             <SuggestedTitlesList />
           </div>
         )} 
 
-      <div className='py-3 px-1 col-12 col-md-6 col-lg-5'>
+      <div className='py-3 px-2  mx-4 col-12 col-md-6 col-lg-5'>
         <h4>{ userParam ? `${user.username}'s` : 'Your'} Rated Titles</h4>
           <RatedTitlesList user={user.username}/>
       </div>
 
       </div>
-
+      </div>
     </>
     
   )
