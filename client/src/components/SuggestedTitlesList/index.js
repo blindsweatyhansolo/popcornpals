@@ -3,6 +3,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_SUGGESTIONS } from '../../utils/queries';
 import { REMOVE_SUGGESTION } from '../../utils/mutations';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Button from 'react-bootstrap/Button';
 
 const SuggestedTitlesList = () => {
 
@@ -56,13 +57,23 @@ const SuggestedTitlesList = () => {
                 <i className='bi bi-person-video2'></i> {movie.suggestedBy}
                 </Link>
             </div>
-            <button 
+            <div className="my-2">
+              <Button 
+                variant="danger"
+                value={movie._id} 
+                onClick={handleClick}
+                size="sm"
+              >
+                Remove
+              </Button>
+            </div>
+            {/* <button 
               className='btn btn-danger'
               value={movie._id}
               onClick={handleClick}
             >
               Remove
-            </button>
+            </button> */}
           </ListGroup.Item>
         ))}
       </ListGroup>

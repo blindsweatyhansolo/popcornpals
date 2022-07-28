@@ -45,7 +45,7 @@ function App() {
       <Router>
         {/* <div className=''> */}
           <Header />
-          <main className='px-4 pb-4'>
+          <main className='px-2 pb-4'>
             <Routes>
               <Route path='/' element={<Landing />} />
               <Route path='/home' element={<Home />} />
