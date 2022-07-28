@@ -146,7 +146,7 @@ const Profile = (props) => {
       
         {userParam ? ('') : (
           <div className='py-3 px-1 col-12 col-md-6 col-lg-5'>
-            <h4>Your Suggested Titles</h4>
+            <h4>Suggested By Your Pals</h4>
             <SuggestedTitlesList />
           </div>
         )} 

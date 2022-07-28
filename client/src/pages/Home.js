@@ -76,7 +76,7 @@ const Home = () => {
       {loggedIn && (
         <>
         <div className='row d-flex align-items-center my-4'>
-          <MovieListHeader heading='My Suggestions' />
+          <MovieListHeader heading='Suggested By Your Pals' />
         </div>
         
         <div className='row'>

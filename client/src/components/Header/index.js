@@ -18,7 +18,7 @@ const Header = () => {
   const loggedIn = Auth.loggedIn();
 
   return (
-    <Navbar bg="dark" variant="dark" expand="md" className="px-2" >
+    <Navbar collapseOnSelect bg="dark" variant="dark" expand="md" className="px-2" >
       <Navbar.Brand>
         <Link to='/home' className="px-2" id="brand">
           <img src={popcorn} alt="popcornLogo" />
@@ -26,19 +26,31 @@ const Header = () => {
         </Link>
       </Navbar.Brand>
 
-      <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+      <Navbar.Toggle  aria-controls="basic-navbar-nav"/>
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="ms-auto">
           {/*  USE AUTH TO EITHER SHOW LOGIN/SIGNUP OR PROFILE/LOGOUT */}
           {loggedIn ? (
             <>
-              <Link to="/profile" className="px-2">Profile</Link>
-              <Link to="/" onClick={logout} className="px-2">Logout</Link>
+              <Nav.Link eventKey="1" as={Link} to="/profile" className="px-2">
+                {/* <Link to="/profile" className="px-2">Profile</Link> */}
+                Profile
+              </Nav.Link>
+              <Nav.Link eventKey="2" as={Link} to="/" className="px-2" onClick={logout}>
+                Logout
+              </Nav.Link>
+              {/* <Link to="/"  className="px-2">Logout</Link> */}
             </>
           ) : (
             <>
-              <Link to='/login' className="px-2">Login</Link>
-              <Link to='/signup' className="px-2">Sign Up</Link>
+              <Nav.Link eventKey="1" as={Link} to="/login" className="px-2">
+                Login
+              </Nav.Link>
+              <Nav.Link eventKey="2" as={Link} to="/signup" className="px-2">
+                Sign Up
+              </Nav.Link>
+              {/* <Link to='/login' className="px-2">Login</Link> */}
+              {/* <Link to='/signup' className="px-2">Sign Up</Link> */}
             </>
           )}
         </Nav>

@@ -27,7 +27,7 @@ const RatingList = (props) => {
         <Accordion>
           <Accordion.Item eventKey="0">
             <Accordion.Header>
-              See Pal Ratings for This Title:
+              See PopcornPal Ratings for This Title:
             </Accordion.Header>
             
             <Accordion.Body>
@@ -56,7 +56,7 @@ const RatingList = (props) => {
                   <Link to={`/profile/${rating.user}`}>
                     <p><i className="bi bi-person-video2"></i> {rating.user}</p>
                   </Link>
-                    <p>Rating: {rating.rating}</p>
+                    <p>Rating: <strong>{rating.rating}</strong></p>
                   <p className="col-12">{rating.reviewBody}</p>
                 </div>
               </div>

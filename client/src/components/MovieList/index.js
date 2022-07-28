@@ -9,7 +9,7 @@ const MovieList = (props) => {
   return (
     <>
       <div className="d-flex justify-content-center">
-        <Carousel fade className="col-12 col-md-6 col-lg-3">
+        <Carousel fade interval={null} className="col-12 col-md-6 col-lg-3">
         {props.movies.map((movie) => {
 
           if (movie.Poster === 'N/A') {

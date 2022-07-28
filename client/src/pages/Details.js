@@ -2,10 +2,11 @@
 // RATINGLIST - displays all possible ratings for single movie based on imdbID if available
 // RATEFORM / SUGGESTFORM - hidden if user is not logged in
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import SuggestionForm from "../components/SuggestForm";
 import RateForm from "../components/RateForm";
 import RatingList from "../components/RatingList";
+import Button from 'react-bootstrap/Button';
 
 import Auth from '../utils/auth';
 const noPoster = require('../assets/images/noposter.png');
@@ -43,13 +44,20 @@ const Details = () => {
   // get the logged in user's username for use in child components
   const loggedIn = Auth.loggedIn();
 
+  const navigate = useNavigate();
+
   // console.log(movie);
 
   return (
     <>
       <div className='p-4'>
+        <Button onClick={() => navigate(-1)} className='mb-4'>
+          <i className='bi bi-arrow-left'></i> Back
+        </Button>
+
         <div className='d-flex flex-wrap justify-content-center pb-2'>
 
+          
         
           <div>
             <a href={`https://www.imdb.com/title/${movie.imdbID}/`} target="_blank" rel="noreferrer">
@@ -71,13 +79,13 @@ const Details = () => {
         {/* FORMS ONLY RENDER WHEN LOGGED IN */}
         {loggedIn && (
           <>
-            <div className="col-12 col-md-6 col-lg-6 py-2 px-2">
+            <div className="col-12 col-md-8 col-lg-8 py-2">
               <SuggestionForm 
               movie={movie}
               imdbID={imdbID}/>
             </div>
             
-            <div className="col-12 col-md-6 col-lg-6 py-2 px-2">
+            <div className="col-12 col-md-8 col-lg-8 py-2">
               <RateForm 
                 movie={movie}
                 imdbID={imdbID}
