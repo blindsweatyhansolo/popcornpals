@@ -58,16 +58,11 @@ const typeDefs = gql`
   type Query {
     me: User
     user(username: String!): User
+    users: [User]
     suggestedMovies: [Suggestion]
     ratedMovies(user: String!): [Rating]
     myRating(imdbID: String!): Rating
     allRatings(imdbID: String!): [Rating]
-
-    # TESTING QUERIES
-    users: [User]
-    singleMovie(imdbID: String!): Movie
-    allMovies: [Movie]
-    singleSuggestion(imdbID: String!): Suggestion
   } 
 
   # DEFINE MUTATIONS
@@ -82,12 +77,6 @@ const typeDefs = gql`
     rateMovie(rating: String!, reviewBody: String!, imdbID: String!, title: String!): Rating
     suggestMovie(imdbID: String!, title: String!, friendId: ID!): Suggestion
     removeSuggestion(suggestionId: ID!): Suggestion
-
-    # TESTING MUTATIONS
-    suggestToMyselfTest(imdbID: String!, title: String!, friend: String!): Suggestion
-    deleteAllSuggestions: Suggestion
-    rateMovieForFriend(title: String!, user: String!, userRating: String!, imdbID: String!, reviewBody: String!): Rating 
-    deleteAllRatings: Rating
   }
 `;
 

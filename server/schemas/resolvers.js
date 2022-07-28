@@ -32,6 +32,15 @@ const resolvers = {
       .populate('ratedMovies');
     },
 
+     // USERS - find all users; populate with friend and rated movie data
+     users: async () => {
+      return User.find()
+        .select('-__v -password')
+        .populate('friends')
+        .populate('ratedMovies')
+        .populate('suggestions');
+    },
+
     // RATEDMOVIES - find all rated movies for specified user; params: username
     ratedMovies: async (parent, { user }) => {
       const ratedMovieData = await Rating.find({ user: user })
@@ -53,13 +62,6 @@ const resolvers = {
       throw new AuthenticationError('Not logged in!');
     },
     
-    // ALLRATINGS - find all ratings for specified movie via imdbID, a movie must exist in
-    // the db before it can be rated
-    allRatings: async (parent, { imdbID }, context) => {
-      return Rating.find({ imdbID: imdbID })
-      .select('-__v')
-    },
-
     myRating: async (parent, { imdbID }, context) => {
       if (context.user) {
         const rating = await Rating.findOne(
@@ -72,41 +74,12 @@ const resolvers = {
         throw new AuthenticationError('Not logged in!');
     },
     
-    // USERS - find all users; populate with friend and rated movie data
-    users: async () => {
-      return User.find()
-        .select('-__v -password')
-        .populate('friends')
-        .populate('ratedMovies')
-        .populate('suggestions');
-    },
-
-    // SINGLEMOVIE - find single movie saved in db via id
-    singleMovie: async (parent, { imdbID }) => {
-      return Movie.findOne({ imdbID })
-        .select('-__v')
-        .populate('rating');
-    },
-
-    // ALL MOVIES - find all movies saved in db
-    allMovies: async () => {
-    return Movie.find()
+    // ALLRATINGS - find all ratings for specified movie via imdbID, a movie must exist in
+    // the db before it can be rated
+    allRatings: async (parent, { imdbID }, context) => {
+      return Rating.find({ imdbID: imdbID })
       .select('-__v')
-      .populate('rating')
     },
-
-    singleSuggestion: async (parent, { imdbID }, context) => {
-      if (context.user) {
-        const suggestion = await Suggestion.findOne(
-          { imdbID: imdbID, suggestedTo: context.user._id}
-        );
-
-        return suggestion;
-      }
-
-      throw new AuthenticationError('You must be logged in!');
-    },
-      
   },
 
   // MUTATION RESOLVERS //
@@ -291,62 +264,7 @@ const resolvers = {
       };
 
       throw new AuthenticationError('You must be logged in!');
-    },
-
-
-    // TESTING MUTATIONS
-    suggestToMyselfTest: async (parent, { friend, imdbID, title }, context) => {
-      if (context.user) {
-        const suggestion = await Suggestion.findOne(
-          { imdbID: imdbID, suggestedTo: context.user._id }
-        );
-        
-        if (suggestion) {
-          const updatedSuggestion = await Suggestion.findOneAndUpdate(
-            { _id: suggestion },
-            { suggestedBy: friend },
-            { new: true }
-          );
-
-          return updatedSuggestion;
-
-        } else if (suggestion === null) {
-          const newSuggestion = await Suggestion.create(
-            {
-              imdbID: imdbID,
-              title: title,
-              suggestedBy: friend,
-              suggestedTo: context.user._id
-            }
-          );
-
-          return newSuggestion;
-        };
-      };
-
-      throw new AuthenticationError('You must be logged in!');
-    },
-
-    rateMovieForFriend: async (parent, { user, imdbID, userRating, reviewBody, title }) => {
-      const newFakeRating = await Rating.create(
-        {
-          imdbID: imdbID,
-          title: title,
-          rating: userRating,
-          reviewBody: reviewBody,
-          user: user
-        }
-      );
-      return newFakeRating;
-    },
-
-    deleteAllRatings: async (parent) => {
-      await Rating.deleteMany({});
-    },
-
-    deleteAllSuggestions: async (parent) => {
-      await Suggestion.deleteMany({});
-    },
+    }
   }
 };
 
