@@ -27,6 +27,7 @@ const SuggestionForm = (props) => {
   });
 
   const [friendValue, setFriendValue] = useState("");
+  const [error, setError] = useState(false);
 
   const { loading, data } = useQuery(QUERY_ME_BASIC);
   const user = data?.me;
@@ -37,25 +38,31 @@ const SuggestionForm = (props) => {
   // change friend value to selected friend, reset button text
   const handleFormChange = (event) => {
     setFriendValue({ value: event.target.value });
+    setError(false);
   };
   
   // handle suggestion mutation with selected friend
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    
-    try {
-      await suggestMovie({
-        variables: {
-          imdbID: imdbID,
-          title: movie.Title,
-          friendId: friendValue.value,
-        }
-      });
-      
-      handleShow();
-    } catch (e) {
-      console.error(e);
-    }
+
+    if (!friendValue.value || friendValue.value === null || friendValue.value === 'null') {
+      setError(true);
+      return;
+    } else {
+      try {
+        await suggestMovie({
+          variables: {
+            imdbID: imdbID,
+            title: movie.Title,
+            friendId: friendValue.value,
+          }
+        });
+
+        handleShow();
+      } catch (e) {
+        console.error(e);
+      }
+    };
   };
 
 
@@ -81,6 +88,11 @@ const SuggestionForm = (props) => {
                 )}
               </select>
             </div>
+            {error && 
+            <div className='text-center'>
+              <span className='text-danger'>Error: Please select a friend.</span>
+            </div>}
+            
 
             
 
