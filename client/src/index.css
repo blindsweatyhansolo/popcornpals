@@ -11,6 +11,9 @@ body {
   max-height: 100vh;
 }
 
+:root {
+  --popcorn: #FAC213;
+}
 
 a {
   text-decoration: none;
@@ -18,9 +21,22 @@ a {
 }
 
 a:hover { 
-  color: #FAC213;
+  color: var(--popcorn);
+  transform: scale(1.1);
+}
+
+.popcornText {
+  color: var(--popcorn);
 }
 
 .notFound {
   max-width: 100%;
+}
+
+.grow:hover {
+  transform: scale(1.1);
+}
+
+.splashIcon {
+  max-width: 64px;
 }

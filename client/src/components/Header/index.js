@@ -20,7 +20,7 @@ const Header = () => {
   return (
     <Navbar collapseOnSelect bg="dark" variant="dark" expand="md" className="px-2" >
       <Navbar.Brand>
-        <Link to='/home' className="px-2" id="brand">
+        <Link to='/home' className="px-2 fs-1" id="brand">
           <img src={popcorn} alt="popcornLogo" />
           Popcorn Pals
         </Link>
@@ -28,7 +28,7 @@ const Header = () => {
 
       <Navbar.Toggle  aria-controls="basic-navbar-nav"/>
       <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="ms-auto">
+        <Nav className="ms-auto fs-5">
           {/*  USE AUTH TO EITHER SHOW LOGIN/SIGNUP OR PROFILE/LOGOUT */}
           {loggedIn ? (
             <>
