@@ -21,6 +21,6 @@ a:hover {
   color: #FAC213;
 }
 
-#notFound {
+.notFound {
   max-width: 100%;
 }

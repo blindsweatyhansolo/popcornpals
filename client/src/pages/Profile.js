@@ -11,9 +11,9 @@ import Button from "react-bootstrap/Button";
 import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_ME_BASIC, QUERY_USER } from "../utils/queries";
 import { ADD_FRIEND } from "../utils/mutations";
-// import { REMOVE_USER } from "../utils/mutations";
 
 import Auth from "../utils/auth";
+const userNotFound = require('../assets/images/404user.png');
 
 const Profile = (props) => {
   // destructure params for username of current profile
@@ -35,7 +35,7 @@ const Profile = (props) => {
   const { loading, data } = useQuery(userParam ? QUERY_USER : QUERY_ME_BASIC, {
     variables: { username: userParam }
   });
-  const user = data?.me || data?.user || {};
+  const user = data?.me || data?.user || 'null';
 
   // drop username in URL, navigate to personal profile if username matched logged in user 
   if (Auth.loggedIn() && Auth.getProfile().data.username === userParam) {
@@ -66,6 +66,17 @@ const Profile = (props) => {
       <div className="my-4 text-center">
         You must first login or sign up to access user profiles. Use the navigation links above!
       </div>
+    )
+  }
+
+  if (user === 'null') {
+    return (
+      <>
+      <div className="my-4 text-center">
+        <p>Looks like you're trying to find a user that doesn't exist. Please try again.</p>
+      <img src={userNotFound} alt='404: User not found' className="notFound"/>
+      </div>
+      </>
     )
   }
 

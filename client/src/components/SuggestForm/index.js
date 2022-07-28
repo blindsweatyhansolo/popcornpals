@@ -97,7 +97,7 @@ const SuggestionForm = (props) => {
     
     <Modal centered show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title className="text-dark">Movie Suggested</Modal.Title>
+        <Modal.Title className="text-dark"> Movie Suggested!</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p className='text-dark'>
