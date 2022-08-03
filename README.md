@@ -20,7 +20,7 @@ and see what they think about them.
 
 ## [Installation:](#table-of-contents)
 
-To use *PopcornPals*, all you need to do is visit the live site *[here on Heroku]*(https://popcornpals.herokuapp.com/). To access all features, sign up for an account.
+To use *PopcornPals*, all you need to do is visit the live site [here on Heroku](https://popcornpals.herokuapp.com/). To access all features, sign up for an account.
 
 To work with this project's code base, ensure that you have Node.js and MongoDB pre-installed on your machine.
 
